@@ -4,7 +4,22 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { DefaultTheme, Provider as PaperProvider, Appbar, Menu , Text} from 'react-native-paper';
 
-import LoginPage from './pages/LoginPage';
+import Loading from './pages/Loading';
+import Login from './pages/Login';
+import Home from './pages/Home';
+
+import firebase from 'firebase/app'
+
+var firebaseConfig = {
+  apiKey: "AIzaSyC94dXTd5hAp-VWqIFB1T4vwLhS83yqe-0",
+  authDomain: "iregister-expo.firebaseapp.com",
+  projectId: "iregister-expo",
+  storageBucket: "iregister-expo.appspot.com",
+  messagingSenderId: "272179835846",
+  appId: "1:272179835846:web:d41397e354364363fe78c7"
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
 
 
 const Stack = createStackNavigator();
@@ -32,12 +47,21 @@ function CustomNavigationBar({ scene, navigation, previous }) {
   const closeMenu = () => setVisible(false);
   const MORE_ICON = Platform.OS === 'ios' ? 'dots-horizontal' : 'dots-vertical';
 
+  logoutUser = () => {
+    firebase
+      .auth()
+      .signOut()
+      .then(() => {
+        this.props.navigation.navigate("Login");
+      });
+  };
+
 
   return (
     <Appbar.Header >
       {previous && title != "Home"? <Appbar.BackAction onPress={navigation.goBack} /> : null}
       <Appbar.Content title= {title != "Home" ? title : "iRegister"}  />
-     {/*
+     
       <Menu
           visible={visible}
           onDismiss={closeMenu}
@@ -46,27 +70,42 @@ function CustomNavigationBar({ scene, navigation, previous }) {
           }>
 
           {title != "Home"?  <Menu.Item onPress={()=>navigation.navigate('Home')} title="Home" /> : null}
-          <Menu.Item onPress={()=>{store.dispatch(logout());  navigation.navigate('Login')}} title="Logout" />          
+          <Menu.Item onPress={()=>{this.logoutUser;  navigation.navigate('Login')}} title="Logout" />          
          
-        </Menu>*/}
+        </Menu>
 
     </Appbar.Header>
   );
 }
+
+
+
+
 class App extends React.Component {
+
+  
   render() {
     return (
       <PaperProvider theme={theme}>
       <NavigationContainer>
         <Stack.Navigator
-        initialRouteName="Login"
+        initialRouteName="Loading"
         screenOptions={{
           header: (props) => <CustomNavigationBar {...props} />,
         }}>
           <Stack.Screen
-            name="Login"
-            component={LoginPage}
+            name="Loading"
+            component={Loading}
             options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Login"
+            component={Login}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Home"
+            component={Home}
           />
         </Stack.Navigator>
       </NavigationContainer>
