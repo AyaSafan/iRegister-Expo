@@ -9,6 +9,7 @@ import store from './store';
 
 import Loading from './pages/Loading';
 import Login from './pages/Login';
+import LoadingMain from './pages/LoadingMain'
 import Main from './pages/Main';
 
 import firebase from 'firebase/app'
@@ -112,6 +113,11 @@ class App extends React.Component {
           <Stack.Screen
             name="Login"
             component={Login}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="LoadingMain"
+            component={LoadingMain}
             options={{headerShown: false}}
           />
           <Stack.Screen

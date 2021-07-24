@@ -1,14 +1,14 @@
 import React, { Component } from 'react'; 
 import {StyleSheet, SafeAreaView, KeyboardAvoidingView, Platform, ScrollView, View, Image } from 'react-native';
 import {TextInput, Button, Snackbar, Text} from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
 
 
 import { connect } from 'react-redux'
-import {login} from '../actions';
+//import {login, addInfo} from '../actions';
 
 import firebase from 'firebase/app'
 import "firebase/auth"
+
 
 const Message = (props) => {
 
@@ -36,10 +36,12 @@ const Message = (props) => {
   );
 };
 
+
 class Login extends Component {
   
   state = { email: "", password: "", errorMessage: null };
 
+  
   handleLogin = () => {
     const { email, password } = this.state;
     
@@ -47,8 +49,7 @@ class Login extends Component {
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then(() => {
-        this.props.navigation.navigate("Main");
-        this.props.dispatch(login());
+        this.props.navigation.navigate("LoadingMain");
       })
       .catch(error => this.setState({ errorMessage: error.message }));
   };

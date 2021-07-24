@@ -3,8 +3,8 @@ import {LOGIN, LOGOUT} from './actions'
 
 
 const initialState = {
-    currentUser: null,
-    info: null
+    currentUser: {email: "initial", uid: "initial"},
+    info: {displayname: "initial",  role: "teacher"}
 }
 
 const reducer = (state = initialState, action) => {
@@ -13,8 +13,9 @@ const reducer = (state = initialState, action) => {
         return Object.assign({}, state, {
           ...state,
           currentUser:  action.currentUser,
-          info:  action.info
+          info: action.info
         })
+        
       }
       case LOGOUT:{ 
         return Object.assign({}, state, {

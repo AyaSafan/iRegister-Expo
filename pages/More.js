@@ -1,16 +1,17 @@
 import React, { Component } from 'react'; 
 import { Appbar } from 'react-native-paper';
-import { List, Divider } from 'react-native-paper';
+import { Divider } from 'react-native-paper';
 import { Drawer } from 'react-native-paper';
 
 
 import { connect } from 'react-redux';
 import {logout} from '../actions';
+//import {login} from '../actions';
 
 
 import firebase from 'firebase/app'
 import "firebase/auth"
-import {db} from '../App';
+
 
 
 
@@ -20,20 +21,14 @@ class More extends Component {
   constructor(props) {
     super(props);
   }
-  
-  state = {
-    users: []
-  };
-
-  async getUsers() {    
-    const snapshot = db.collection("users").get()
-    const users = snapshot.docs.map(doc => doc.data());  
-    this.setState({ users });
-  }
-
+  /*
+  // REMOVE LATER and imports
   async componentDidMount() {
-    this.getUsers();
-  }
+    if (!this.props.currentUser){
+      this.props.dispatch(login());
+    }
+  }*/
+
 
   logoutUser = () => {
         firebase
@@ -52,26 +47,29 @@ class More extends Component {
       <Appbar.Header>
         <Appbar.Content title="Settings" />
       </Appbar.Header>
-      <List.Item
-            title= {this.props.currentUser? this.props.currentUser.uid : ""}
-            left={props => <List.Icon {...props} icon="account" />}
-        />
-        <List.Item
-            title= {this.props.users? this.props.users[0].displayname : ""}
-            left={props => <List.Icon {...props} icon="account" />}
-        />
       
-    <Drawer.Item
-     icon="email"
-     label= {this.props.currentUser? this.props.currentUser.email : ""}
-    />
+        <Drawer.Item
+        icon="account"
+        label=  {this.props.currentUser? this.props.currentUser.uid : "loading ..."}
+        />
 
-    <Divider />
-    <Drawer.Item
-     icon="logout"
-     label="Logout"
-     onPress={this.logoutUser}
-    />
+        <Drawer.Item
+        icon="account"
+        label= {this.props.info? this.props.info.displayname : "loading ..."}
+        />
+          
+        <Drawer.Item
+        icon="email"
+        label= {this.props.currentUser? this.props.currentUser.email : "loading ..."}
+        />
+
+        <Divider />
+
+        <Drawer.Item
+        icon="logout"
+        label="Logout"
+        onPress={this.logoutUser}
+        />
 
     </>
     );
