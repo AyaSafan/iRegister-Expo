@@ -1,6 +1,8 @@
 import React, { Component } from 'react'; 
 import {StyleSheet, SafeAreaView, KeyboardAvoidingView, Platform, ScrollView, View, Image } from 'react-native';
 import {TextInput, Button, Snackbar, Text} from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
+
 
 import { connect } from 'react-redux'
 import {login} from '../actions';
@@ -40,6 +42,7 @@ class Login extends Component {
 
   handleLogin = () => {
     const { email, password } = this.state;
+    
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'; 
-import { BottomNavigation, Text } from 'react-native-paper';
+import { BottomNavigation } from 'react-native-paper';
 
 import QRscan from './QRscan';
 import Home from './Home';
@@ -20,17 +20,18 @@ export default class Main extends Component {
       { key: 'home', title: 'Home', icon: 'home' },
       { key: 'qrscan', title: 'Scan', icon: 'camera' },
     ],
-    currentUser: null };
+    //currentUser: null 
+  };
     
-    componentDidMount() {
+    /*componentDidMount() {
         const currentUser  = firebase.auth().currentUser;
         this.setState({ currentUser });
-    }
+    }*/
 
   _handleIndexChange = index => this.setState({ index });
 
   _renderScene = BottomNavigation.SceneMap({
-    more: MoreRoute,
+    more: () => <More navigation={this.props.navigation}/>,
     home: HomeRoute,
     qrscan: QRscanRoute,
   });

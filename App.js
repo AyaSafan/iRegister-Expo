@@ -69,7 +69,7 @@ function CustomNavigationBar({ scene, navigation, previous }) {
     <Appbar.Header >
       {previous && title != "Home"? <Appbar.BackAction onPress={navigation.goBack} /> : null}
       <Appbar.Content title= {title != "Home" ? title : "iRegister"}  />
-     
+     {/*
       <Menu
           visible={visible}
           onDismiss={closeMenu}
@@ -81,6 +81,7 @@ function CustomNavigationBar({ scene, navigation, previous }) {
           <Menu.Item onPress={()=>{this.logoutUser;  navigation.navigate('Login')}} title="Logout" />          
          
         </Menu>
+      */}
 
     </Appbar.Header>
     </Provider>

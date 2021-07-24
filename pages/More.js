@@ -3,6 +3,7 @@ import { Appbar } from 'react-native-paper';
 import { List, Divider } from 'react-native-paper';
 import { Drawer } from 'react-native-paper';
 
+
 import { connect } from 'react-redux';
 import {logout} from '../actions';
 
@@ -14,17 +15,35 @@ import {db} from '../App';
 
 
 
-class More extends Component {    
+class More extends Component {
 
-    logoutUser = () => {
+  constructor(props) {
+    super(props);
+  }
+  
+  state = {
+    users: []
+  };
+
+  async getUsers() {    
+    const snapshot = db.collection("users").get()
+    const users = snapshot.docs.map(doc => doc.data());  
+    this.setState({ users });
+  }
+
+  async componentDidMount() {
+    this.getUsers();
+  }
+
+  logoutUser = () => {
         firebase
           .auth()
           .signOut()
           .then(() => {
             this.props.dispatch(logout());
-            this.props.navigation.navigate("Login");            
+            this.props.navigation.navigate("Login");        
           });
-      };   
+  };   
 
 
   render() {
@@ -38,21 +57,21 @@ class More extends Component {
             left={props => <List.Icon {...props} icon="account" />}
         />
         <List.Item
-            title= {this.props.currentUser? this.props.info.displayname : ""}
+            title= {this.props.users? this.props.users[0].displayname : ""}
             left={props => <List.Icon {...props} icon="account" />}
         />
-
-      <List.Item
-            title= {this.props.currentUser? this.props.currentUser.email : ""}
-            left={props => <List.Icon {...props} icon="email" />}/>  
+      
+    <Drawer.Item
+     icon="email"
+     label= {this.props.currentUser? this.props.currentUser.email : ""}
+    />
 
     <Divider />
     <Drawer.Item
      icon="logout"
      label="Logout"
-     onPress={()=>{this.logoutUser()}}
-
-   />
+     onPress={this.logoutUser}
+    />
 
     </>
     );

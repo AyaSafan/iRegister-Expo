@@ -32,8 +32,8 @@ class Home extends Component {
         value={searchText}
       />
        <View style={styles.container}>
-       { this.state.courses.map(course => (
-        <View>
+       { this.state.courses.map((course, index) => (
+        <View key={index}>
           <Text>{ course.code }</Text>
         </View>
         ))}
