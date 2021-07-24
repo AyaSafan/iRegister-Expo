@@ -12,16 +12,11 @@ import "firebase/auth"
 
 
 class LoadingMain extends React.Component { 
-  /*
-  async load() {     
-    const currentUser  = firebase.auth().currentUser;   
-    const snapshot = await db.collection("users").doc(currentUser.uid).get()
-    const info = snapshot.data();
-    this.props.dispatch(addInfo(info));
-  }*/
 
   componentDidMount() {
+    //Get user
     const currentUser  = firebase.auth().currentUser; 
+    //Get user extra info
     firebase.firestore().collection("users").doc(currentUser.uid).get()
     .then((user) => {
       this.props.dispatch(login(currentUser, user.data()));
@@ -30,28 +25,6 @@ class LoadingMain extends React.Component {
     .catch(error => console.log(error));
   }
 
-
-  /*componentDidMount() {
-    this.props.dispatch(login());
-    const currentUser  = firebase.auth().currentUser;
-    var docRef =  db.collection("users").doc(currentUser.uid);
-
-    docRef.get().then((doc) => {
-      if (doc.exists) {
-          info = doc.data();
-          this.props.dispatch(addInfo(info));
-          console.log("Document data from info:", info);
-          //this.props.navigation.navigate("Main"); 
-      } else {
-          console.log("No such user!");
-      }
-    }).catch((error) => {
-        console.log("Error getting document:", error);
-    });
-
-    console.log('mounted')
-    //this.props.navigation.navigate("Main"); 
-  }*/
 
   render() {
     return (

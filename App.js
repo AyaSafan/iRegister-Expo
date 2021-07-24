@@ -15,6 +15,11 @@ import Main from './pages/Main';
 import firebase from 'firebase/app'
 import 'firebase/firestore';
 
+import { LogBox } from 'react-native'
+LogBox.ignoreLogs([
+  'Require cycle:', 'Setting a timer'
+])
+
 
 var firebaseConfig = {
   apiKey: "AIzaSyC94dXTd5hAp-VWqIFB1T4vwLhS83yqe-0",
@@ -26,7 +31,6 @@ var firebaseConfig = {
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
 
 
 const Stack = createStackNavigator();
@@ -49,41 +53,12 @@ function CustomNavigationBar({ scene, navigation, previous }) {
       ? options.title
       : scene.route.name;
 
-  const [visible, setVisible] = React.useState(false);
-  const openMenu = () => setVisible(true);
-  const closeMenu = () => setVisible(false);
-  const MORE_ICON = Platform.OS === 'ios' ? 'dots-horizontal' : 'dots-vertical';
-
-  logoutUser = () => {
-    firebase
-      .auth()
-      .signOut()
-      .then(() => {
-        this.props.dispatch(logout());
-        this.props.navigation.navigate("Login");
-      });
-  };
-
 
   return (
     <Provider store={store}> 
     <Appbar.Header >
       {previous && title != "Home"? <Appbar.BackAction onPress={navigation.goBack} /> : null}
       <Appbar.Content title= {title != "Home" ? title : "iRegister"}  />
-     {/*
-      <Menu
-          visible={visible}
-          onDismiss={closeMenu}
-          anchor={
-            <Appbar.Action icon={MORE_ICON} color="white" onPress={openMenu} />
-          }>
-
-          {title != "Home"?  <Menu.Item onPress={()=>navigation.navigate('Home')} title="Home" /> : null}
-          <Menu.Item onPress={()=>{this.logoutUser;  navigation.navigate('Login')}} title="Logout" />          
-         
-        </Menu>
-      */}
-
     </Appbar.Header>
     </Provider>
   );
@@ -133,5 +108,4 @@ class App extends React.Component {
   }
 }
 
-export {db};
 export default App;

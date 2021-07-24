@@ -3,8 +3,8 @@ import {LOGIN, LOGOUT} from './actions'
 
 
 const initialState = {
-    currentUser: {email: "initial", uid: "initial"},
-    info: {displayname: "initial",  role: "teacher"}
+    currentUser: null,
+    info: null
 }
 
 const reducer = (state = initialState, action) => {

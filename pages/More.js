@@ -6,13 +6,10 @@ import { Drawer } from 'react-native-paper';
 
 import { connect } from 'react-redux';
 import {logout} from '../actions';
-//import {login} from '../actions';
 
 
 import firebase from 'firebase/app'
 import "firebase/auth"
-
-
 
 
 
@@ -21,14 +18,6 @@ class More extends Component {
   constructor(props) {
     super(props);
   }
-  /*
-  // REMOVE LATER and imports
-  async componentDidMount() {
-    if (!this.props.currentUser){
-      this.props.dispatch(login());
-    }
-  }*/
-
 
   logoutUser = () => {
         firebase
@@ -47,11 +36,6 @@ class More extends Component {
       <Appbar.Header>
         <Appbar.Content title="Settings" />
       </Appbar.Header>
-      
-        <Drawer.Item
-        icon="account"
-        label=  {this.props.currentUser? this.props.currentUser.uid : "loading ..."}
-        />
 
         <Drawer.Item
         icon="account"
@@ -87,4 +71,3 @@ const mapDispatchToProps = dispatch => {
   }
 
 export default connect(mapStateToProps, mapDispatchToProps)(More)
-//export default More;

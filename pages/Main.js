@@ -12,7 +12,7 @@ export default class Main extends Component {
     routes: [
       { key: 'more', title: 'More', icon: 'account-cog' },
       { key: 'home', title: 'Home', icon: 'home' },
-      { key: 'qrscan', title: 'Scan', icon: 'camera' },
+      { key: 'qrscan', title: 'Scan', icon: 'qrcode-scan' },
     ],
   };
     

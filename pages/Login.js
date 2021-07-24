@@ -2,10 +2,6 @@ import React, { Component } from 'react';
 import {StyleSheet, SafeAreaView, KeyboardAvoidingView, Platform, ScrollView, View, Image } from 'react-native';
 import {TextInput, Button, Snackbar, Text} from 'react-native-paper';
 
-
-import { connect } from 'react-redux'
-//import {login, addInfo} from '../actions';
-
 import firebase from 'firebase/app'
 import "firebase/auth"
 
@@ -126,9 +122,4 @@ const styles = StyleSheet.create({
 });
 
 
-const mapDispatchToProps = dispatch => {
-  return {
-    dispatch
-  }
-}
-export default connect(mapDispatchToProps)(Login)
+export default Login

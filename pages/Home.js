@@ -1,10 +1,10 @@
 import React, { Component } from 'react'; 
-import {StyleSheet,  View, Text } from 'react-native';
-import { Searchbar } from 'react-native-paper';
+import {StyleSheet,  View, Text, ScrollView } from 'react-native';
+import { Searchbar, Surface } from 'react-native-paper';
 
 import { connect } from 'react-redux';
 
-import {db} from '../App';
+import firebase from 'firebase/app'
 
 class Home extends Component {
   state = {
@@ -12,10 +12,13 @@ class Home extends Component {
     courses: []
   };
 
-  async getCourses() {    
-    const snapshot = await db.collection("courses").get()
-    const courses = snapshot.docs.map(doc => doc.data());  
-    this.setState({ courses });
+  async getCourses() { 
+    const db = firebase.firestore(); 
+    if(this.props.info.role == "teacher"){    
+      const snapshot = await db.collection("courses").where("user", "==", this.props.currentUser.uid).get()
+      const courses = snapshot.docs.map(doc => doc.data());  
+      this.setState({ courses });
+    } 
   }
 
   async componentDidMount() {
@@ -31,14 +34,15 @@ class Home extends Component {
         onChangeText={query => { this.setState({ searchText: query }); }}
         value={searchText}
       />
-       <View style={styles.container}>
+       <ScrollView >
        { this.state.courses.map((course, index) => (
-        <View key={index}>
-          <Text>{ course.code }</Text>
-        </View>
+        <Surface key={index}  style={styles.surface}>
+          <Text style={styles.textmuted}>{ course.code }</Text>
+          <Text>{ course.name }</Text>
+        </Surface>             
         ))}
        
-       </View>
+       </ScrollView>
     </View>
     );
   }
@@ -50,11 +54,22 @@ const styles = StyleSheet.create({
       flexDirection: 'column',
       justifyContent: 'center'
     },
+    surface: {
+      backgroundColor: '#f2f2f2',
+      padding: 10,
+      margin: 8,
+      alignItems: 'flex-start',
+      justifyContent: 'flex-start',
+      elevation: 4,
+    },
+    textmuted:{
+      color: '#6c757d'
+    }
   });
 
 
 const mapStateToProps = state => {
-    return {currentUser: state.currentUser}
+    return {currentUser: state.currentUser, info: state.info}
 }
 
 export default connect(mapStateToProps)(Home)
