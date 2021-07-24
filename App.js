@@ -4,11 +4,16 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { DefaultTheme, Provider as PaperProvider, Appbar, Menu , Text} from 'react-native-paper';
 
+import { Provider } from 'react-redux';
+import store from './store';
+
 import Loading from './pages/Loading';
 import Login from './pages/Login';
-import Home from './pages/Home';
+import Main from './pages/Main';
 
 import firebase from 'firebase/app'
+import 'firebase/firestore';
+
 
 var firebaseConfig = {
   apiKey: "AIzaSyC94dXTd5hAp-VWqIFB1T4vwLhS83yqe-0",
@@ -20,6 +25,7 @@ var firebaseConfig = {
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 
 
 const Stack = createStackNavigator();
@@ -52,12 +58,14 @@ function CustomNavigationBar({ scene, navigation, previous }) {
       .auth()
       .signOut()
       .then(() => {
+        this.props.dispatch(logout());
         this.props.navigation.navigate("Login");
       });
   };
 
 
   return (
+    <Provider store={store}> 
     <Appbar.Header >
       {previous && title != "Home"? <Appbar.BackAction onPress={navigation.goBack} /> : null}
       <Appbar.Content title= {title != "Home" ? title : "iRegister"}  />
@@ -75,6 +83,7 @@ function CustomNavigationBar({ scene, navigation, previous }) {
         </Menu>
 
     </Appbar.Header>
+    </Provider>
   );
 }
 
@@ -86,6 +95,7 @@ class App extends React.Component {
   
   render() {
     return (
+      <Provider store={store}> 
       <PaperProvider theme={theme}>
       <NavigationContainer>
         <Stack.Navigator
@@ -104,14 +114,17 @@ class App extends React.Component {
             options={{headerShown: false}}
           />
           <Stack.Screen
-            name="Home"
-            component={Home}
+            name="Main"
+            component={Main}
+            options={{headerShown: false}}            
           />
         </Stack.Navigator>
       </NavigationContainer>
       </PaperProvider>
+       </Provider>
       );
   }
 }
 
+export {db};
 export default App;

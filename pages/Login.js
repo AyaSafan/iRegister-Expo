@@ -2,15 +2,17 @@ import React, { Component } from 'react';
 import {StyleSheet, SafeAreaView, KeyboardAvoidingView, Platform, ScrollView, View, Image } from 'react-native';
 import {TextInput, Button, Snackbar, Text} from 'react-native-paper';
 
-import * as firebase from "firebase";
+import { connect } from 'react-redux'
+import {login} from '../actions';
+
+import firebase from 'firebase/app'
+import "firebase/auth"
 
 const Message = (props) => {
 
   const [visible, setVisible] = React.useState(true);
   const onToggleSnackBar = () => setVisible(!visible);
   const onDismissSnackBar = () => setVisible(false);
-
-  {props.clearErrorMessage}
 
   return (
     <View>
@@ -42,7 +44,8 @@ class Login extends Component {
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then(() => {
-        this.props.navigation.navigate("Home");
+        this.props.navigation.navigate("Main");
+        this.props.dispatch(login());
       })
       .catch(error => this.setState({ errorMessage: error.message }));
   };
@@ -119,4 +122,9 @@ const styles = StyleSheet.create({
 });
 
 
-export default Login;
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatch
+  }
+}
+export default connect(mapDispatchToProps)(Login)

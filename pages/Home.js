@@ -1,39 +1,62 @@
-import * as React from 'react';
-import { BottomNavigation, Text } from 'react-native-paper';
+import React, { Component } from 'react'; 
+import {StyleSheet,  View, Text } from 'react-native';
+import { Searchbar } from 'react-native-paper';
 
-import QRscan from './QRscan';
+import { connect } from 'react-redux';
 
-const MusicRoute = () => <Text>Music</Text>;
+import {db} from '../App';
 
-const AlbumsRoute = () => <Text>Albums</Text>;
-
-const QRscanRoute = () => <QRscan/>;
-
-export default class Home extends React.Component {
+class Home extends Component {
   state = {
-    index: 0,
-    routes: [
-      { key: 'music', title: 'Music', icon: 'queue-music' },
-      { key: 'albums', title: 'Home', icon: 'album' },
-      { key: 'recents', title: 'Recents', icon: 'history' },
-    ],
+    searchText: '',
+    courses: []
   };
 
-  _handleIndexChange = index => this.setState({ index });
+  async getCourses() {    
+    const snapshot = await db.collection("courses").get()
+    const courses = snapshot.docs.map(doc => doc.data());  
+    this.setState({ courses });
+  }
 
-  _renderScene = BottomNavigation.SceneMap({
-    music: MusicRoute,
-    albums: AlbumsRoute,
-    recents: QRscanRoute,
-  });
+  async componentDidMount() {
+    this.getCourses();
+  }
 
   render() {
+    const { searchText } = this.state;
     return (
-      <BottomNavigation
-        navigationState={this.state}
-        onIndexChange={this._handleIndexChange}
-        renderScene={this._renderScene}
+    <View style={{padding: 10, paddingTop: 32}}>
+      <Searchbar
+        placeholder="Search"
+        onChangeText={query => { this.setState({ searchText: query }); }}
+        value={searchText}
       />
+       <View style={styles.container}>
+       { this.state.courses.map(course => (
+        <View>
+          <Text>{ course.code }</Text>
+        </View>
+        ))}
+       
+       </View>
+    </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      flexDirection: 'column',
+      justifyContent: 'center'
+    },
+  });
+
+
+const mapStateToProps = state => {
+    return {currentUser: state.currentUser}
+}
+
+export default connect(mapStateToProps)(Home)
+
+//export default Home;
