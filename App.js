@@ -11,6 +11,7 @@ import Loading from './pages/Loading';
 import Login from './pages/Login';
 import LoadingMain from './pages/LoadingMain'
 import Main from './pages/Main';
+import Course from './pages/Course'
 
 import firebase from 'firebase/app'
 import 'firebase/firestore';
@@ -57,8 +58,8 @@ function CustomNavigationBar({ scene, navigation, previous }) {
   return (
     <Provider store={store}> 
     <Appbar.Header >
-      {previous && title != "Home"? <Appbar.BackAction onPress={navigation.goBack} /> : null}
-      <Appbar.Content title= {title != "Home" ? title : "iRegister"}  />
+      {previous ? <Appbar.BackAction onPress={navigation.goBack} /> : null}  
+      <Appbar.Content title= {title}  />
     </Appbar.Header>
     </Provider>
   );
@@ -99,6 +100,10 @@ class App extends React.Component {
             name="Main"
             component={Main}
             options={{headerShown: false}}            
+          />
+           <Stack.Screen
+            name="Course"
+            component={Course}
           />
         </Stack.Navigator>
       </NavigationContainer>

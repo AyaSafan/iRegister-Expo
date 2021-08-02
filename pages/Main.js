@@ -1,12 +1,15 @@
 import React, { Component } from 'react'; 
 import { BottomNavigation } from 'react-native-paper';
 
+import { connect } from 'react-redux';
+
 import QRscan from './QRscan';
+import QRcreate from './QRcreate';
 import Home from './Home';
 import More from './More'
 
 
-export default class Main extends Component {
+class Main extends Component {
   state = {
     index: 1,
     routes: [
@@ -20,8 +23,8 @@ export default class Main extends Component {
 
   _renderScene = BottomNavigation.SceneMap({
     more: () => <More navigation={this.props.navigation}/>,
-    home: () => <Home/>,
-    qrscan: () => <QRscan/>,
+    home: () => <Home navigation={this.props.navigation}/>,
+    qrscan: () => this.props.info.role == 'teacher' ? <QRcreate/> : <QRscan/>,
   });
 
   render() {
@@ -36,3 +39,9 @@ export default class Main extends Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {currentUser: state.currentUser, info: state.info}
+}
+
+export default connect(mapStateToProps)(Main)
