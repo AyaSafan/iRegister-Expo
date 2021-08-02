@@ -4,28 +4,33 @@ import {TextInput, Button, Text} from 'react-native-paper';
 import { Modal, Portal } from 'react-native-paper';
 import QRCode from 'react-native-qrcode-svg';
 
+import { connect } from 'react-redux';
+import store from '../store'
+import { getCourses } from '../actions'
+
+//import firebase from 'firebase/app'
 
 
 class QRcreate extends Component {
 
       
    state ={
-    courseCode: "",
-    courseDate:"",
-    visibility: false,
-    courses: []
-};
-
+    courseCode: null,
+    courseDate: null,
+    visibility: false
+  };
+/*
 async getCourses() { 
     const db = firebase.firestore(); 
     const snapshot = await db.collection("courses").where("teacherID", "==", this.props.currentUser.uid).get()
     const courses = snapshot.docs.map(doc => doc.data());  
     this.setState({ courses });
-}
+}*/
 
-async componentDidMount() {
-  this.getCourses();
-}
+/*async*/ componentDidMount() {
+    //this.getCourses();
+    store.dispatch(getCourses)
+  }
 
 
     render() {
@@ -55,13 +60,7 @@ async componentDidMount() {
           alignItems: 'center'
         }}>
 
-    {this.state.courseCode? 
-      <QRCode 
-              size={200}  
-              value={JSON.stringify({courseCode: this.state.courseCode, courseDate: this.state.courseDate})}
-      />       
-      : null
-    }
+
     </View>
       <TextInput mode='outlined'
       label="Course Code"
@@ -97,4 +96,16 @@ const styles = StyleSheet.create({
     }
   });
 
-export default QRcreate;
+//export default QRcreate;
+
+const mapStateToProps = state => {
+  return {currentUser: state.currentUser, info: state.info, courses: state.courses}
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatch
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(QRcreate)

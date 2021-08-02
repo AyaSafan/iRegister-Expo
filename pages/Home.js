@@ -3,15 +3,17 @@ import {StyleSheet,  View, Text, ScrollView } from 'react-native';
 import { Searchbar, Surface, TouchableRipple } from 'react-native-paper';
 
 import { connect } from 'react-redux';
+import store from '../store'
+import { getCourses } from '../actions'
 
-import firebase from 'firebase/app'
+//import firebase from 'firebase/app'
 
 class Home extends Component {
   state = {
-    searchText: '',
-    courses: []
+    searchText: ''
+    /*courses: []*/
   };
-
+/*
   async getCourses() { 
     const db = firebase.firestore(); 
     if(this.props.info.role == "teacher"){    
@@ -28,10 +30,11 @@ class Home extends Component {
       const courses = snapshot.docs.map(doc => doc.data()); 
       this.setState({ courses });   
       }
-  }
+  }*/
 
-  async componentDidMount() {
-    this.getCourses();
+  /*async*/ componentDidMount() {
+    //this.getCourses();
+    store.dispatch(getCourses)
   }
 
   render() {
@@ -44,7 +47,7 @@ class Home extends Component {
         value={searchText}
       />
        <ScrollView >
-       { this.state.courses.map((course, index) => (
+       { this.props.courses.map((course, index) => (
         
         <TouchableRipple key={index}
            onPress={() =>  this.props.navigation.navigate("Course", {code: course.code})}
@@ -85,7 +88,7 @@ const styles = StyleSheet.create({
 
 
 const mapStateToProps = state => {
-    return {currentUser: state.currentUser, info: state.info}
+    return {currentUser: state.currentUser, info: state.info, courses: state.courses}
 }
 
 export default connect(mapStateToProps)(Home)
