@@ -15,7 +15,7 @@ class Main extends Component {
     routes: [
       { key: 'more', title: 'More', icon: 'account-cog' },
       { key: 'home', title: 'Home', icon: 'home' },
-      { key: 'qrscan', title: 'Scan', icon: 'qrcode-scan' },
+      { key: 'qrscan', title: 'QR', icon: this.props.info.role == "teacher"? 'qrcode-edit': 'qrcode-scan' },
     ],
   };
     

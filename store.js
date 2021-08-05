@@ -1,9 +1,7 @@
-//import { createStore } from 'redux'
 import { createStore, applyMiddleware } from 'redux'
 import {LOGIN, LOGOUT, GET_COURSES} from './actions'
 
 
-//import firebase from 'firebase/app'
 
 import { composeWithDevTools } from 'redux-devtools-extension'
 import thunkMiddleware from 'redux-thunk'
@@ -43,28 +41,7 @@ const reducer = (state = initialState, action) => {
 }
 }
 
-/*
-export async function getCourses(dispatch, getState) {
-  const stateBefore = getState() 
-  const db = firebase.firestore(); 
-  if(stateBefore.info.role == "teacher"){    
-    const snapshot = await db.collection("courses").where("teacherID", "==", stateBefore.currentUser.uid).get()
-    const courses = snapshot.docs.map(doc => doc.data());  
-    dispatch({ type: GET_COURSES, courses: courses })
-  } else{
-    const registrationData = await db.collection("registration").where("studentID", "==", stateBefore.currentUser.uid).get()
-    const registrations = registrationData.docs.map(doc => doc.data());
-    let codes = [];
-    var i;
-    for (i in registrations){ codes.push(registrations[i].courseCode)}
-    const snapshot = await db.collection("courses").where("code", "in", codes).get()
-    const courses = snapshot.docs.map(doc => doc.data()); 
-    dispatch({ type: GET_COURSES, courses: courses })   
-    }
-}*/
-
 const composedEnhancer = composeWithDevTools(applyMiddleware(thunkMiddleware))
 
-//const store = createStore(reducer)
 const store = createStore(reducer, composedEnhancer)
 export default store

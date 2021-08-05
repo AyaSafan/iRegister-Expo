@@ -1,93 +1,124 @@
 import React, { Component } from 'react'; 
-import {StyleSheet, SafeAreaView,  View } from 'react-native';
-import {TextInput, Button, Text} from 'react-native-paper';
-import { Modal, Portal } from 'react-native-paper';
+import {StyleSheet, SafeAreaView, KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
+import {TextInput, Button} from 'react-native-paper';
 import QRCode from 'react-native-qrcode-svg';
+import { MaterialCommunityIcons } from '@expo/vector-icons'; 
+
 
 import { connect } from 'react-redux';
-import store from '../store'
 import { getCourses } from '../actions'
 
-//import firebase from 'firebase/app'
 
 
 class QRcreate extends Component {
 
       
-   state ={
-    courseCode: null,
-    courseDate: null,
-    visibility: false
+  state ={
+    code: null,
+    date: null,
+    dateTime: null,
+    time: null,
+    exp: null
   };
-/*
-async getCourses() { 
-    const db = firebase.firestore(); 
-    const snapshot = await db.collection("courses").where("teacherID", "==", this.props.currentUser.uid).get()
-    const courses = snapshot.docs.map(doc => doc.data());  
-    this.setState({ courses });
-}*/
 
-/*async*/ componentDidMount() {
-    //this.getCourses();
-    store.dispatch(getCourses)
+  formatandSaveDate(date){
+    var dd = date.getDay();
+    var mm = date.getMonth(); 
+    var yyyy = date.getFullYear();
+    var h = date.getHours();
+    var m = date.getMinutes();
+    dd = dd < 10 ? "0" + dd : dd;
+    mm = mm < 10 ? "0" + mm : mm;
+    h = h < 10 ? "0" + h : h;
+    m = m < 10 ? "0" + m : m;
+    var date = dd + '.'+ mm + '.'+ yyyy
+    var dateTime = date + " " + h	+ ":" + m;
+    this.setState({date});
+    this.setState({dateTime});
+  }
+
+  setTime(){
+    var now = new Date();
+    var time = now.getTime();
+    this.setState({time});
+    this.formatandSaveDate(now);
+  }
+
+  increaseDate(){
+    var d = new Date();
+    var time = this.state.time + (10*60*1000)
+    d.setTime(time);
+    this.setState({time}); 
+    this.formatandSaveDate(d);
+  }
+
+  componentDidMount() {
+    this.props.dispatch(getCourses)
+    this.setTime()
   }
 
 
-    render() {
+  render() {
     return (
-        <SafeAreaView>              
-      <Portal>
-        <Modal visible={this.state.visibility} onDismiss={() => this.setState({visibility: false})} contentContainerStyle={ {backgroundColor: 'white', padding: 20, margin: 20}}>
-            <View style={{alignSelf: 'center'}}>
-              <QRCode 
-              logoSize={200} 
-              size={250}  
-              value={JSON.stringify({courseCode: this.state.courseCode, courseDate: this.state.courseDate})}
-              /> 
-          </View>  
-        </Modal>
-      </Portal>
 
-      
+      <SafeAreaView style={{flex: 1, justifyContent: 'center'}}>
+      <KeyboardAvoidingView
+      style = {{ flex: 1 }}
+      {...(Platform.OS === 'ios' && { behavior: 'padding' })}>
+
+      <ScrollView style={{flex: 1, paddingVertical: 50}}>
+           
 
       <View style={styles.sectionContainer}>
 
       <View
         style={{
-          width: '100%',
           flexDirection: 'row',
           justifyContent: 'space-around',
-          alignItems: 'center'
+          alignItems: 'center',
+          paddingBottom: 20
         }}>
+      
+      {this.state.code && this.state.dateTime? 
+        <QRCode 
+                      size={150}  
+                      value={JSON.stringify({code: this.state.code, dateTime: this.state.dateTime})}
+                      enableLinearGradient = {true}
+                      linearGradient = {['rgb(204,51,0)','rgb(0,0,0)']	}
+        />
+      : <MaterialCommunityIcons name="qrcode-edit" size={150} color="black" />} 
 
 
-    </View>
-      <TextInput mode='outlined'
+    
+    </View>   
+
+      <TextInput mode='outlined' style={styles.margin}
       label="Course Code"
-      onChangeText={(courseCode) => this.setState({courseCode})}
-      value={this.state.courseCode}/>
+      onChangeText={(code) => this.setState({code})}
+      value={this.state.code}/>
 
-      <TextInput mode='outlined'
-      label="DD/MM/YYYY"
-      onChangeText={(courseDate) => this.setState({courseDate})}
-      value={this.state.courseDate}/>
-
-
-      <Button style={styles.margin}
-      mode="contained"
-      onPress={() => this.setState({visibility: this.state.courseDate && this.state.courseCode ? true: false})}
-      > Create QR </Button>              
-      </View>     
-        
-
-      </SafeAreaView>
+      <TextInput mode='outlined' disabled style={styles.margin}
+      label="Expiration Date"
+      value={this.state.dateTime}
+      left={
+      <TextInput.Icon name="plus" onPress={()=> this.increaseDate()} forceTextInputFocus={false} />
+      /*<TextInput.Icon name="reload" onPress={()=> this.setTime() } forceTextInputFocus={false} />*/
+      }
+      right={
+        <TextInput.Icon name="reload" onPress={()=> this.setTime() } forceTextInputFocus={false} />
+        }
+      />     
+      
+      </View>
+      </ScrollView>
+    </KeyboardAvoidingView>          
+    </SafeAreaView>
     )
     }
 }
 
 const styles = StyleSheet.create({
     sectionContainer: {
-      marginTop: 32,
       paddingHorizontal: 24,
       paddingVertical: 100
     },
@@ -96,7 +127,6 @@ const styles = StyleSheet.create({
     }
   });
 
-//export default QRcreate;
 
 const mapStateToProps = state => {
   return {currentUser: state.currentUser, info: state.info, courses: state.courses}

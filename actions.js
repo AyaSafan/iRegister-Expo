@@ -27,11 +27,13 @@ export async function getCourses(dispatch, getState) {
       const courses = snapshot.docs.map(doc => doc.data());  
       dispatch({ type: GET_COURSES, courses: courses })
     } else{
-      const registrationData = await db.collection("registration").where("studentID", "==", stateBefore.currentUser.uid).get()
-      const registrations = registrationData.docs.map(doc => doc.data());
       let codes = [];
-      var i;
-      for (i in registrations){ codes.push(registrations[i].courseCode)}
+      //const registrationData = await db.collection("registration").where("studentID", "==", stateBefore.currentUser.uid).get()
+      //const registrations = registrationData.docs.map(doc => doc.data());
+      const registrationData = await db.collection("registration").where("students", "array-contains", stateBefore.currentUser.uid).get()
+      registrationData.docs.map(doc => codes.push(doc.id));      
+      //var i;
+      //for (i in registrations){ codes.push(registrations[i].courseCode)}
       const snapshot = await db.collection("courses").where("code", "in", codes).get()
       const courses = snapshot.docs.map(doc => doc.data()); 
       dispatch({ type: GET_COURSES, courses: courses })   

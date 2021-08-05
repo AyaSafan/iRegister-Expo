@@ -3,38 +3,17 @@ import {StyleSheet,  View, Text, ScrollView } from 'react-native';
 import { Searchbar, Surface, TouchableRipple } from 'react-native-paper';
 
 import { connect } from 'react-redux';
-import store from '../store'
 import { getCourses } from '../actions'
 
-//import firebase from 'firebase/app'
 
 class Home extends Component {
   state = {
     searchText: ''
-    /*courses: []*/
   };
-/*
-  async getCourses() { 
-    const db = firebase.firestore(); 
-    if(this.props.info.role == "teacher"){    
-      const snapshot = await db.collection("courses").where("teacherID", "==", this.props.currentUser.uid).get()
-      const courses = snapshot.docs.map(doc => doc.data());  
-      this.setState({ courses });
-    } else{
-      const registrationData = await db.collection("registration").where("studentID", "==", this.props.currentUser.uid).get()
-      const registrations = registrationData.docs.map(doc => doc.data());
-      let codes = [];
-      var i;
-      for (i in registrations){ codes.push(registrations[i].courseCode)}
-      const snapshot = await db.collection("courses").where("code", "in", codes).get()
-      const courses = snapshot.docs.map(doc => doc.data()); 
-      this.setState({ courses });   
-      }
-  }*/
 
-  /*async*/ componentDidMount() {
-    //this.getCourses();
-    store.dispatch(getCourses)
+
+  componentDidMount() {
+    this.props.dispatch(getCourses)
   }
 
   render() {
@@ -91,6 +70,11 @@ const mapStateToProps = state => {
     return {currentUser: state.currentUser, info: state.info, courses: state.courses}
 }
 
-export default connect(mapStateToProps)(Home)
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatch
+  }
+}
 
-//export default Home;
+export default connect(mapStateToProps, mapDispatchToProps)(Home)
+
