@@ -1,36 +1,13 @@
 import React, { Component } from 'react'; 
 import {StyleSheet, SafeAreaView, KeyboardAvoidingView, Platform, ScrollView, View, Image } from 'react-native';
-import {TextInput, Button, Snackbar, Text} from 'react-native-paper';
+import {TextInput, Button} from 'react-native-paper';
 
 import firebase from 'firebase/app'
 import "firebase/auth"
 
+import { Message } from '../components/Message';
 
-const Message = (props) => {
 
-  const [visible, setVisible] = React.useState(true);
-  const onToggleSnackBar = () => setVisible(!visible);
-  const onDismissSnackBar = () => setVisible(false);
-
-  return (
-    <View>
-      {props.errorMessage && (
-            <Snackbar
-            visible={visible}
-            onDismiss={onDismissSnackBar}
-            action={{
-              label: 'Dismiss',
-              onPress: () => {
-                onToggleSnackBar
-                {props.clearErrorMessage()}
-              },
-            }}>
-           {props.errorMessage}
-          </Snackbar>
-      )} 
-    </View>
-  );
-};
 
 
 class Login extends Component {

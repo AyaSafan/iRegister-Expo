@@ -8,7 +8,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 import { getCourses } from '../actions'
 
-
+import Message from '../components/Message'
 
 class QRcreate extends Component {
 
@@ -18,7 +18,9 @@ class QRcreate extends Component {
     date: null,
     dateTime: null,
     time: null,
-    exp: null
+    exp: null,
+    errorMessage: null,
+    permission: false
   };
 
   formatandSaveDate(date){
@@ -37,20 +39,39 @@ class QRcreate extends Component {
     this.setState({dateTime});
   }
 
-  setTime(){
+  setTime = () =>{
     var now = new Date();
     var time = now.getTime();
     this.setState({time});
     this.formatandSaveDate(now);
   }
 
-  increaseDate(){
+  increaseDate = () =>{
     var d = new Date();
     var time = this.state.time + (10*60*1000)
     d.setTime(time);
     this.setState({time}); 
     this.formatandSaveDate(d);
   }
+
+  getPermission(code){
+    for(let i = 0; i < this.props.courses.length; i++ ){
+      if(code == this.props.courses[i].code){
+        this.setState({permission : true})
+        this.setState({errorMessage: null })
+        break;
+      }else{
+        this.setState({permission : false})
+        this.setState({errorMessage: "Permission for this course failed" })      }
+    }
+  }
+
+  clearErrorMessage = () => {
+    this.setState({
+      errorMessage: null
+    })
+  }
+
 
   componentDidMount() {
     this.props.dispatch(getCourses)
@@ -79,7 +100,7 @@ class QRcreate extends Component {
           paddingBottom: 20
         }}>
       
-      {this.state.code && this.state.dateTime? 
+      {this.state.permission? 
         <QRCode 
                       size={150}  
                       value={JSON.stringify({code: this.state.code, dateTime: this.state.dateTime})}
@@ -94,24 +115,30 @@ class QRcreate extends Component {
 
       <TextInput mode='outlined' style={styles.margin}
       label="Course Code"
-      onChangeText={(code) => this.setState({code})}
+      onChangeText={(code) => {this.setState({code}); this.setState({permission : false});}}
       value={this.state.code}/>
 
       <TextInput mode='outlined' disabled style={styles.margin}
       label="Expiration Date"
       value={this.state.dateTime}
       left={
-      <TextInput.Icon name="plus" onPress={()=> this.increaseDate()} forceTextInputFocus={false} />
-      /*<TextInput.Icon name="reload" onPress={()=> this.setTime() } forceTextInputFocus={false} />*/
+      <TextInput.Icon name="plus" onPress={this.increaseDate} forceTextInputFocus={false} />
       }
       right={
-        <TextInput.Icon name="reload" onPress={()=> this.setTime() } forceTextInputFocus={false} />
+        <TextInput.Icon name="reload" onPress={this.setTime} forceTextInputFocus={false} />
         }
-      />     
+      /> 
+
+    <Button style={styles.margin}  mode="contained" onPress={() => this.getPermission(this.state.code)}> CREATE QR </Button>
+          
       
       </View>
       </ScrollView>
-    </KeyboardAvoidingView>          
+    </KeyboardAvoidingView> 
+
+    {this.state.errorMessage && (
+      <Message errorMessage= {this.state.errorMessage} clearErrorMessage = {this.clearErrorMessage}/>
+    )}         
     </SafeAreaView>
     )
     }
