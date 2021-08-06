@@ -1,5 +1,5 @@
 import React, { Component } from 'react'; 
-import {StyleSheet, SafeAreaView, KeyboardAvoidingView, Platform, ScrollView, View, Pressable, Modal } from 'react-native';
+import {StyleSheet, SafeAreaView, KeyboardAvoidingView, Platform, ScrollView, View, Pressable, Modal, TouchableWithoutFeedback } from 'react-native';
 import {TextInput, Button } from 'react-native-paper';
 import QRCode from 'react-native-qrcode-svg';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
@@ -94,6 +94,7 @@ class QRcreate extends Component {
         animationIn={'slideInLeft'}
         animationOut={'slideOutRight'}
       >
+        <TouchableWithoutFeedback onPress={() =>  this.setState({visibility: false})}>
           <View style={{flex: 1, justifyContent: 'center', alignSelf: 'center' }}>
             <QRCode 
                       size={250}  
@@ -101,7 +102,8 @@ class QRcreate extends Component {
                       enableLinearGradient = {true}
                       linearGradient = {['rgb(204,51,0)','rgb(0,0,0)']	}
             /> 
-          </View>  
+          </View> 
+          </TouchableWithoutFeedback> 
         </Modal>
 
 
