@@ -1,6 +1,6 @@
 import React, { Component } from 'react'; 
-import {StyleSheet,  View, Text, ScrollView } from 'react-native';
-import { Searchbar, Surface, TouchableRipple } from 'react-native-paper';
+import {StyleSheet,  View, Text, ScrollView, Pressable } from 'react-native';
+import { Searchbar, Surface } from 'react-native-paper';
 
 import { connect } from 'react-redux';
 import { getCourses } from '../actions'
@@ -28,15 +28,14 @@ class Home extends Component {
        <ScrollView >
        { this.props.courses.map((course, index) => (
         
-        <TouchableRipple key={index}
-           onPress={() =>  this.props.navigation.navigate("Course", {code: course.code})}
-           rippleColor="rgba(0, 0, 0, 0)"   >
+        <Pressable key={index}
+           onPress={() =>  this.props.navigation.navigate("Course", {code: course.code})} >
             <Surface style={styles.surface}>
               <Text style={styles.textmuted}>{ course.code }</Text>
               <Text>{ course.name }</Text>
             </Surface> 
 
-         </TouchableRipple>
+         </Pressable>
             
         ))}
        

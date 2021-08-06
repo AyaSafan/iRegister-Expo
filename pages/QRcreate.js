@@ -1,6 +1,6 @@
 import React, { Component } from 'react'; 
-import {StyleSheet, SafeAreaView, KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
-import {TextInput, Button} from 'react-native-paper';
+import {StyleSheet, SafeAreaView, KeyboardAvoidingView, Platform, ScrollView, View, Pressable, Modal } from 'react-native';
+import {TextInput, Button } from 'react-native-paper';
 import QRCode from 'react-native-qrcode-svg';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 
@@ -20,7 +20,8 @@ class QRcreate extends Component {
     time: null,
     exp: null,
     errorMessage: null,
-    permission: false
+    permission: false,
+    visibility: false
   };
 
   formatandSaveDate(date){
@@ -83,6 +84,27 @@ class QRcreate extends Component {
     return (
 
       <SafeAreaView style={{flex: 1, justifyContent: 'center'}}>
+      
+      <Modal
+        style={styles.modalContent}
+        visible={this.state.visibility}
+        onRequestClose={() =>  this.setState({visibility: false})}
+        backdropColor = {'white'}
+        backdropOpacity = {1}
+        animationIn={'slideInLeft'}
+        animationOut={'slideOutRight'}
+      >
+          <View style={{flex: 1, justifyContent: 'center', alignSelf: 'center' }}>
+            <QRCode 
+                      size={250}  
+                      value={JSON.stringify({code: this.state.code, dateTime: this.state.dateTime})}
+                      enableLinearGradient = {true}
+                      linearGradient = {['rgb(204,51,0)','rgb(0,0,0)']	}
+            /> 
+          </View>  
+        </Modal>
+
+
       <KeyboardAvoidingView
       style = {{ flex: 1 }}
       {...(Platform.OS === 'ios' && { behavior: 'padding' })}>
@@ -101,12 +123,14 @@ class QRcreate extends Component {
         }}>
       
       {this.state.permission? 
+      <Pressable onPress={() => this.setState({visibility:  true})}>
         <QRCode 
                       size={150}  
                       value={JSON.stringify({code: this.state.code, dateTime: this.state.dateTime})}
                       enableLinearGradient = {true}
                       linearGradient = {['rgb(204,51,0)','rgb(0,0,0)']	}
         />
+      </Pressable>
       : <MaterialCommunityIcons name="qrcode-edit" size={150} color="black" />} 
 
 
@@ -119,14 +143,14 @@ class QRcreate extends Component {
       value={this.state.code}/>
 
       <TextInput mode='outlined' disabled style={styles.margin}
-      label="Expiration Date"
+      label="Expiration"
       value={this.state.dateTime}
       left={
       <TextInput.Icon name="plus" onPress={this.increaseDate} forceTextInputFocus={false} />
       }
       right={
-        <TextInput.Icon name="reload" onPress={this.setTime} forceTextInputFocus={false} />
-        }
+      <TextInput.Icon name="reload" onPress={this.setTime} forceTextInputFocus={false} />
+      }
       /> 
 
     <Button style={styles.margin}  mode="contained" onPress={() => this.getPermission(this.state.code)}> CREATE QR </Button>
@@ -151,7 +175,14 @@ const styles = StyleSheet.create({
     },
     margin:{
         marginVertical: 5
-    }
+    },
+    modalContent: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: 4,
+      borderColor: 'rgba(0, 0, 0, 0.1)',
+      margin: 0
+    },
   });
 
 
