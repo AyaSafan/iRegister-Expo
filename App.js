@@ -2,7 +2,7 @@ import React from 'react';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { DefaultTheme, Provider as PaperProvider, Appbar, Menu , Text} from 'react-native-paper';
+import { configureFonts, DefaultTheme, Provider as PaperProvider, Appbar, Menu , Text} from 'react-native-paper';
 
 import { Provider } from 'react-redux';
 import store from './store';
@@ -12,6 +12,8 @@ import Login from './pages/Login';
 import LoadingMain from './pages/LoadingMain'
 import Main from './pages/Main';
 import Course from './pages/Course'
+import CourseTeacher from './pages/CourseTeacher';
+import AttendanceList from './pages/AttendanceList';
 
 import firebase from 'firebase/app'
 import 'firebase/firestore';
@@ -36,14 +38,42 @@ firebase.initializeApp(firebaseConfig);
 
 const Stack = createStackNavigator();
 
+
+const font ={
+  regular: {
+    fontFamily: 'Roboto Regular',
+    fontWeight: 'normal',
+  },
+  medium: {
+    fontFamily: 'Roboto Medium',
+    fontWeight: 'normal',
+  },
+  light: {
+    fontFamily: 'Roboto Light',
+    fontWeight: 'normal',
+  },
+  thin: {
+    fontFamily: 'Roboto Thin',
+    fontWeight: 'normal',
+  },
+}
+const fontConfig = {
+  web: font,
+  ios: font,
+  android: font,
+};
+
 const theme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    primary: '#cc3300',
-    accent: "#eea29a"
+    primary: "#dc3545",
+    accent: "#289bbd",
+    background: "#f2f2f2",
+    fonts: configureFonts(fontConfig)
   },
 };
+
 
 function CustomNavigationBar({ scene, navigation, previous }) {
   const { options } = scene.descriptor;
@@ -104,6 +134,14 @@ class App extends React.Component {
            <Stack.Screen
             name="Course"
             component={Course}
+          />
+          <Stack.Screen
+            name="CourseTeacher"
+            component={CourseTeacher}
+          />
+          <Stack.Screen
+            name="AttendanceList"
+            component={AttendanceList}
           />
         </Stack.Navigator>
       </NavigationContainer>

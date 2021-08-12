@@ -45,44 +45,41 @@ class Login extends Component {
   render() {
 
     return (
+    <>
       <SafeAreaView style={{flex: 1, justifyContent: 'center'}}>
-      <KeyboardAvoidingView
-      style = {{ flex: 1 }}
-      {...(Platform.OS === 'ios' && { behavior: 'padding' })}>
+        <KeyboardAvoidingView  style = {{ flex: 1 }}   {...(Platform.OS === 'ios' && { behavior: 'padding' })}>
 
-      <ScrollView style={{flex: 1, paddingVertical: 50}}>
-        <View style={{alignSelf: 'center'}}>
-        <Image  source={require('../assets/iRegister_is_.png')} style={{alignSelf: 'center'}}/>
-        </View>
+          <ScrollView style={{flex: 1, paddingVertical: 50}}
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}>
 
+            <View style={{alignSelf: 'center'}}>
+            <Image  source={require('../assets/iRegister_is_.png')} style={{alignSelf: 'center'}}/>
+            </View>
+            <View style={styles.sectionContainer}>
 
+              <TextInput style={styles.margin} mode='outlined'
+              label="Email"
+              onChangeText={(email) => this.setState({email})}
+              value={this.state.email}/>
 
-        <View style={styles.sectionContainer}>
+              <TextInput style={styles.margin} mode='outlined' secureTextEntry={true}
+              label="Password"
+              onChangeText={(password) => this.setState({password})}
+              value={this.state.password}/>
 
-          <TextInput style={styles.margin} mode='outlined'
-          label="Email"
-          onChangeText={(email) => this.setState({email})}
-          value={this.state.email}/>
+              <Button style={styles.margin}  mode="contained" onPress={this.handleLogin}> Login </Button>
 
-          <TextInput style={styles.margin} mode='outlined' secureTextEntry={true}
-          label="Password"
-          onChangeText={(password) => this.setState({password})}
-          value={this.state.password}/>
-
-          <Button style={styles.margin}  mode="contained" onPress={this.handleLogin}> Login </Button>
-
-        </View> 
-      </ScrollView>
-    </KeyboardAvoidingView>    
+            </View> 
+          </ScrollView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>     
     
     {this.state.errorMessage && (
             <Message errorMessage= {this.state.errorMessage} clearErrorMessage = {this.clearErrorMessage}/>
     )}    
+    </> 
      
-    </SafeAreaView>
-
-
-      
     )
   }
 }
@@ -95,8 +92,8 @@ const styles = StyleSheet.create({
   },
   margin:{
     marginVertical: 5
-  }
+  },
 });
 
 
-export default Login
+export default Login;

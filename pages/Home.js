@@ -9,28 +9,6 @@ import CourseItem from '../components/CourseItem';
 
 import filter from 'lodash.filter'
 
-function renderHeader() {
-  return (
-    <View
-      style={{
-        backgroundColor: '#fff',
-        padding: 10,
-        marginVertical: 10,
-        borderRadius: 20
-      }}
-    >
-      <TextInput
-        autoCapitalize="none"
-        autoCorrect={false}
-        clearButtonMode="always"
-        value={query}
-        onChangeText={queryText => handleSearch(queryText)}
-        placeholder="Search"
-        style={{ backgroundColor: '#fff', paddingHorizontal: 20 }}
-      />
-    </View>
-  );
-}
 
 class Home extends Component {
 
@@ -75,17 +53,18 @@ class Home extends Component {
     );
 
     return (
-    <View style={{padding: 10, paddingTop: 32}}>
-      <Searchbar
+    <View style={{flex: 1}}>
+      <Searchbar style={{margin: 10, marginTop: 32}}
         placeholder="Search"
         onChangeText={query => { this.handleSearch(query) }}
-        value={this.state.searchText}
       />
-       <FlatList style={{marginBottom: 40}}
+       <FlatList 
         data={this.state.courses}
         renderItem={renderCourse}
         keyExtractor={course => course.code}
         initialNumToRender ={6}
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
       />
     </View>
     );

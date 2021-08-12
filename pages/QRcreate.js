@@ -1,5 +1,5 @@
 import React, { Component } from 'react'; 
-import {StyleSheet, SafeAreaView, KeyboardAvoidingView, Platform, ScrollView, View, Pressable, Modal, TouchableWithoutFeedback } from 'react-native';
+import {StyleSheet, SafeAreaView, KeyboardAvoidingView, Platform, ScrollView, View, Pressable, Modal, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import {TextInput, Button } from 'react-native-paper';
 import QRCode from 'react-native-qrcode-svg';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
@@ -82,8 +82,8 @@ class QRcreate extends Component {
 
   render() {
     return (
-
-      <SafeAreaView style={{flex: 1, justifyContent: 'center'}}>
+    <>
+      
       
       <Modal
         style={styles.modalContent}
@@ -106,13 +106,11 @@ class QRcreate extends Component {
           </TouchableWithoutFeedback> 
         </Modal>
 
-
-      <KeyboardAvoidingView
-      style = {{ flex: 1 }}
-      {...(Platform.OS === 'ios' && { behavior: 'padding' })}>
-
-      <ScrollView style={{flex: 1, paddingVertical: 50}}>
-           
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={styles.container}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 
       <View style={styles.sectionContainer}>
 
@@ -155,17 +153,20 @@ class QRcreate extends Component {
       }
       /> 
 
-    <Button style={styles.margin}  mode="contained" onPress={() => this.getPermission(this.state.code)}> CREATE QR </Button>
+      <Button style={styles.margin}  mode="contained" onPress={() => this.getPermission(this.state.code)}> CREATE QR </Button>
           
       
-      </View>
-      </ScrollView>
-    </KeyboardAvoidingView> 
+    </View>
 
+
+  
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
+  
     {this.state.errorMessage && (
       <Message errorMessage= {this.state.errorMessage} clearErrorMessage = {this.clearErrorMessage}/>
     )}         
-    </SafeAreaView>
+    </>
     )
     }
 }
@@ -184,6 +185,14 @@ const styles = StyleSheet.create({
       borderRadius: 4,
       borderColor: 'rgba(0, 0, 0, 0.1)',
       margin: 0
+    },
+    container: {
+      flex: 1
+    },
+    inner: {
+      padding: 24,
+      flex: 1,
+      justifyContent: "space-around"
     },
   });
 

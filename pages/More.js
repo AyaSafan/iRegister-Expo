@@ -1,7 +1,6 @@
 import React, { Component } from 'react'; 
-import { Appbar } from 'react-native-paper';
-import { Divider } from 'react-native-paper';
-import { Drawer } from 'react-native-paper';
+import { StyleSheet} from 'react-native';
+import { Appbar, Divider, Drawer , Surface} from 'react-native-paper';
 
 
 import { connect } from 'react-redux';
@@ -33,10 +32,10 @@ class More extends Component {
   render() {
     return (
     <>
-      <Appbar.Header>
-        <Appbar.Content title="Settings" />
+      <Appbar.Header >
+        <Appbar.Content  style={{ alignItems: 'center' }}  title="Settings" />
       </Appbar.Header>
-
+      <Surface style={styles.surface}>
         <Drawer.Item
         icon="account"
         label= {this.props.info? this.props.info.displayname : "loading ..."}
@@ -54,12 +53,26 @@ class More extends Component {
         label="Logout"
         onPress={this.logoutUser}
         />
-
+      </Surface>
     </>
     );
   }
 }
 
+const styles = StyleSheet.create({
+  surface: {
+    padding: 15,
+    margin: 8,
+    marginHorizontal: 15,
+    elevation: 4,
+    borderRadius: 8,
+
+    marginTop: 32
+  },
+  textmuted:{
+    color: '#6c757d'
+  }
+});
 const mapStateToProps = state => {
     return {currentUser: state.currentUser, info: state.info}
 }
