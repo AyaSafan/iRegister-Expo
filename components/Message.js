@@ -1,6 +1,7 @@
 import React from 'react'; 
-import {Snackbar} from 'react-native-paper';
+
 import {View} from 'react-native';
+import {Snackbar} from 'react-native-paper';
 
 function Message(props) {
 

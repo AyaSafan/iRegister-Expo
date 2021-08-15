@@ -1,18 +1,14 @@
-import React from 'react'; 
-import { StyleSheet, ScrollView, SafeAreaView, View , Text} from 'react-native';
-import { Surface } from 'react-native-paper';
-import { ActivityIndicator, Colors } from 'react-native-paper';
+import React from 'react';
+import {styles} from '../styles'
 
-
-
-import { useNavigation } from '@react-navigation/native';
-import { useState, useEffect } from 'react';
-
+import { ScrollView, SafeAreaView, View , Text} from 'react-native';
+import { ActivityIndicator, Colors, Surface } from 'react-native-paper';
 
 import DateItem from '../components/DateItem';
 import {getDates} from '../functions'
-import {styles} from '../styles'
 
+import { useState, useEffect } from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 function CourseTeacher (props) {
 
@@ -54,25 +50,5 @@ function CourseTeacher (props) {
     
   )
 }
-/*
-const styles = StyleSheet.create({
-    surface: {
-      padding: 15,
-      marginHorizontal: 15,
-      marginVertical: 8,
-      elevation: 4,
-      borderRadius: 8,
-      
-    },
-    textmuted:{
-      color: '#6c757d'
-    },
-    loading: {
-      flex : 1,
-      alignItems: 'center',
-      justifyContent: 'center',
-      alignSelf: 'center',
-    }
-  });*/
 
 export default CourseTeacher;

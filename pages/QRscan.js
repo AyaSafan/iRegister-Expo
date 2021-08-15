@@ -1,8 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, Button } from 'react-native';
+import React from 'react';
+import {styles} from '../styles'
+
+import { Text, View, Button } from 'react-native';
+
 import { BarCodeScanner } from 'expo-barcode-scanner';
 
-export default function QRscan() {
+import { useState, useEffect } from 'react';
+
+function QRscan() {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
 
@@ -36,10 +41,13 @@ export default function QRscan() {
   );
 }
 
+/*
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
   },
-});
+});*/
+
+export default QRscan;

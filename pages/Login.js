@@ -1,14 +1,15 @@
-import React, { Component } from 'react'; 
-import {StyleSheet, SafeAreaView, KeyboardAvoidingView, Platform, ScrollView, View, Image } from 'react-native';
+import React from 'react';
+import {styles} from '../styles'
+
+import { SafeAreaView, KeyboardAvoidingView, Platform, ScrollView, View, Image } from 'react-native';
 import {TextInput, Button} from 'react-native-paper';
+
+import { Message } from '../components/Message';
 
 import firebase from 'firebase/app'
 import "firebase/auth"
 
-import {styles} from '../styles'
-import { Message } from '../components/Message';
-
-class Login extends Component {
+class Login extends React.Component {
   
   state = { email: "", password: "", errorMessage: null };
   
@@ -79,18 +80,5 @@ class Login extends Component {
   }
 }
 
-/*
-const styles = StyleSheet.create({
-  sectionContainer: {
-    //marginTop: 24,
-    //paddingHorizontal: 24,
-    paddingHorizontal: 24,
-    paddingVertical: 100
-  },
-  margin:{
-    marginVertical: 5
-  },
-});
-*/
 
 export default Login;

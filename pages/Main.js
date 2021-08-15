@@ -1,15 +1,15 @@
-import React, { Component } from 'react'; 
-import { BottomNavigation } from 'react-native-paper';
+import React from 'react'; 
 
-import { connect } from 'react-redux';
+import { BottomNavigation } from 'react-native-paper';
 
 import QRscan from './QRscan';
 import QRcreate from './QRcreate';
 import Home from './Home';
 import More from './More'
 
+import { connect } from 'react-redux';
 
-class Main extends Component {
+class Main extends React.Component {
   state = {
     index: 1,
     routes: [

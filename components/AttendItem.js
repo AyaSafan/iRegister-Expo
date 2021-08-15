@@ -1,7 +1,8 @@
-import React , {Component} from 'react';
+import React from 'react';
+
 import { List, Divider } from 'react-native-paper';
 
-class AttendItem extends Component {
+class AttendItem extends React.Component {
 
     render() {
         var attended = this.props.attendance.students.includes(this.props.student.uid);

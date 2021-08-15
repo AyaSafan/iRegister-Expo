@@ -1,12 +1,11 @@
 import React from "react";
-import { View, StyleSheet, Image } from "react-native";
+import {styles} from '../styles'
+
+import { View, Image } from "react-native";
 import { ActivityIndicator, Colors } from 'react-native-paper';
 
 import { connect } from 'react-redux'
 import {login} from '../actions';
-
-import {styles} from '../styles'
-
 
 class LoadingMain extends React.Component { 
 
@@ -30,14 +29,7 @@ class LoadingMain extends React.Component {
     );
   }
 }
-/*
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center"
-  }
-});*/
+
 
 const mapStateToProps = state => {
   return {currentUser: state.currentUser}

@@ -1,20 +1,19 @@
-import React, { Component } from 'react'; 
-import {StyleSheet, SafeAreaView, KeyboardAvoidingView, Platform, ScrollView, View, Pressable, Modal, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import React from 'react'; 
+import {styles} from '../styles'
+
+import {KeyboardAvoidingView, Platform, View, Pressable, Modal, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import {TextInput, Button } from 'react-native-paper';
+
 import QRCode from 'react-native-qrcode-svg';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 
+import Message from '../components/Message'
+import {formatDate, havePermission} from '../functions'
 
 import { connect } from 'react-redux';
 import { getCourses } from '../actions'
 
-import Message from '../components/Message'
-import {formatDate, havePermission} from '../functions'
-import {styles} from '../styles'
-
-
-class QRcreate extends Component {
-
+class QRcreate extends React.Component {
       
   state ={    
     date: null,
@@ -151,29 +150,6 @@ class QRcreate extends Component {
     )
     }
 }
-/*
-const styles = StyleSheet.create({
-    sectionContainer: {
-      paddingHorizontal: 24,
-      paddingVertical: 100
-    },
-    margin:{
-        marginVertical: 5
-    },
-    modalContent: {
-      justifyContent: 'center',
-      alignItems: 'center',
-      margin: 0
-    },
-    container: {
-      flex: 1
-    },
-    inner: {
-      padding: 24,
-      flex: 1,
-      justifyContent: "space-around"
-    },
-  });*/
 
 
 const mapStateToProps = state => {

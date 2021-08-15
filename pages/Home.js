@@ -1,18 +1,17 @@
-import React, { Component } from 'react'; 
-import {StyleSheet,  View, FlatList } from 'react-native';
-import { Searchbar } from 'react-native-paper';
-import filter from 'lodash.filter'
-
-import { connect } from 'react-redux';
-import { getCourses } from '../actions'
-
-import CourseItem from '../components/CourseItem';
+import React from 'react';
 import {styles} from '../styles'
 
+import { View, FlatList } from 'react-native';
+import { Searchbar } from 'react-native-paper';
 
+import filter from 'lodash.filter'
 
+import CourseItem from '../components/CourseItem';
+import { getCourses } from '../actions'
 
-class Home extends Component {
+import { connect } from 'react-redux';
+
+class Home extends React.Component {
 
   state = {
     courses: []
@@ -72,15 +71,6 @@ class Home extends Component {
     );
   }
 }
-/*
-const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      flexDirection: 'column',
-      justifyContent: 'center'
-    }
-  });
-*/
 
 const mapStateToProps = state => {
     return {currentUser: state.currentUser, courses: state.courses}

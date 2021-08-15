@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
-import { List, Divider } from 'react-native-paper';
+import React from 'react';
+
 import {View } from 'react-native';
+import { List, Divider } from 'react-native-paper';
 
 import { connect } from 'react-redux';
 
-class DateItem extends Component {
+class DateItem extends React.Component {
 
     constructor(props) {
         super(props);
@@ -34,7 +35,7 @@ render() {
 };
 
 }
-//export default DateItem;
+
 const mapStateToProps = state => {
     return {currentUser: state.currentUser}
 }

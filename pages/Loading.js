@@ -1,13 +1,13 @@
-import React from "react";
-import { View, StyleSheet, Image } from "react-native";
+import React  from "react";
+import {styles} from '../styles'
+
+import { View, Image } from "react-native";
 import { ActivityIndicator, Colors } from 'react-native-paper';
 
 import firebase from 'firebase/app'
 import "firebase/auth"
 
-import {styles} from '../styles'
-
-export default class Loading extends React.Component {
+class Loading extends React.Component {
 
   componentDidMount() {
     firebase.auth().onAuthStateChanged(user => {
@@ -25,11 +25,5 @@ export default class Loading extends React.Component {
     );
   }
 }
-/*
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center"
-  }
-});*/
+
+export default Loading;

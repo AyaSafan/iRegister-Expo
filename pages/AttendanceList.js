@@ -1,15 +1,14 @@
 import React from 'react';
-import {  SafeAreaView, ScrollView, StyleSheet, View  } from 'react-native';
-import {Surface} from 'react-native-paper';
-import { ActivityIndicator, Colors } from 'react-native-paper';
+import {styles} from '../styles'
 
-import { useNavigation } from '@react-navigation/native';
-import { useState, useEffect } from 'react';
-
+import {  SafeAreaView, ScrollView, View  } from 'react-native';
+import { ActivityIndicator, Colors, Surface } from 'react-native-paper';
 
 import AttendItem from '../components/AttendItem';
 import {getRegistration} from '../functions';
-import {styles} from '../styles'
+
+import { useState, useEffect } from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 function AttendanceList (props){
 
@@ -42,25 +41,5 @@ function AttendanceList (props){
   </SafeAreaView>       
   );
 }
-/*
-const styles = StyleSheet.create({
-    surface: {
-      padding: 15,
-      margin: 8,
-      marginHorizontal: 15,
-      elevation: 4,
-      borderRadius: 8,
-  
-      marginTop: 32
-    },
-    textmuted:{
-      color: '#6c757d'
-    },
-    loading: {
-      flex : 1,
-      alignItems: 'center',
-      justifyContent: 'center',
-      alignSelf: 'center',
-    }
-  });*/
+
 export default AttendanceList;
