@@ -13,19 +13,10 @@ export function formatDate(date){
     m = m < 10 ? "0" + m : m;
     var date = dd + '.'+ mm + '.'+ yyyy
     var time = h + ":" + m;
-    //var dateTime = date + " " + time;
     return({date: date, time: time});
 }
 
 export function havePermission(code, courses){
-    /*
-    courses.map(course =>{
-        if(code == course.code){
-            return true;
-        }
-        return false;
-    });*/
-
     for(let i = 0; i < courses.length; i++ ){
       if(code == courses[i].code){
         return true;
@@ -33,6 +24,8 @@ export function havePermission(code, courses){
     }
       return false;
 }
+
+
 //Course.js
 export async function getStatistics(code, currentUser){
     //getDates
@@ -75,25 +68,9 @@ export async function getRegistration(code){
     const db = firebase.firestore(); 
     const doc = await db.collection("registration").doc(code).get()
     const studentUIDs =  doc.data().students;
-    //const students= []
     const students = await Promise.all(studentUIDs.map(uid => {
         return getName(uid).then((student)=> student )
     }))
-    /*
-    studentUIDs.forEach(uid => {getName(uid).then((displayname)=>{ 
-        
-        var student = {"uid": uid, "displayname": displayname}
-        students.push(student);
-        console.log(student)
-        //console.log(students)
-        
-    })})*/
-    /*
-    for(let i = 0; i < studentUIDs.length; i++ ){
-        console.log(studentUIDs[i])
-        getName(studentUIDs[i]).then((displayname)=> console.log(displayname))     
-    } */
-    console.log(students)
     return (students);
 }
 

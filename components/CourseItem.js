@@ -4,13 +4,15 @@ import { Surface } from 'react-native-paper';
 
 import { useSelector } from 'react-redux';
 
+import {styles} from '../styles';
+
 
 function CourseItem (props) {
   const currentUser = useSelector((state) => state.currentUser)
       return (
         <Pressable 
              onPress={() =>  props.navigation.navigate(currentUser.role =='teacher'? "CourseTeacher":"Course", {code: props.code, name: props.name})} >
-              <Surface style={styles.surface}>
+              <Surface style={styles.course}>
                 <Text style={styles.textmuted}>{ props.code }</Text>
                 <Text>{ props.name }</Text>
               </Surface>
@@ -19,7 +21,7 @@ function CourseItem (props) {
       )
 };
 
-
+/*
 const styles = StyleSheet.create({
     surface: {
       padding: 15,
@@ -36,7 +38,7 @@ const styles = StyleSheet.create({
     textmuted:{
       color: '#6c757d'
     }
-  });
+  });*/
 
 
 

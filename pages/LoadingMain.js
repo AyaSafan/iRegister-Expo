@@ -5,37 +5,18 @@ import { ActivityIndicator, Colors } from 'react-native-paper';
 import { connect } from 'react-redux'
 import {login} from '../actions';
 
-
-
-//import firebase from 'firebase/app'
-//import "firebase/auth"
+import {styles} from '../styles'
 
 
 class LoadingMain extends React.Component { 
 
   componentDidMount() {
-    /*
-    //Get user
-    const currentUser  = firebase.auth().currentUser; 
-    //Get user extra info
-    firebase.firestore().collection("users").doc(currentUser.uid).get()
-    .then((user) => {
-      this.props.dispatch(login(currentUser, user.data()));
-      this.props.navigation.replace("Main");
-    })
-    .catch(error => console.log(error));*/
+
     this.props.dispatch(login).then(() => {
       this.props.navigation.replace("Main");
     })
-    //this.props.navigation.replace("Main");
   }
-  /*
-  componentDidUpdate(prevProps) {
-    // Typical usage (don't forget to compare props):
-    if (this.props.currentUser.uid) {
-      this.props.navigation.replace("Main");
-    }
-  }*/
+
 
 
   render() {
@@ -49,13 +30,14 @@ class LoadingMain extends React.Component {
     );
   }
 }
+/*
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center"
   }
-});
+});*/
 
 const mapStateToProps = state => {
   return {currentUser: state.currentUser}

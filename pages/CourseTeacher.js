@@ -9,10 +9,10 @@ import { useNavigation } from '@react-navigation/native';
 import { useState, useEffect } from 'react';
 
 
-//import firebase from 'firebase/app'
-
 import DateItem from '../components/DateItem';
 import {getDates} from '../functions'
+import {styles} from '../styles'
+
 
 function CourseTeacher (props) {
 
@@ -22,17 +22,6 @@ function CourseTeacher (props) {
     const [dates, setDates] = useState([]);
     const [isLoading, setLoading] = useState(true);
 
-/*
-    const getDates= async (code) =>{
-        const db = firebase.firestore(); 
-        const snapshot = await db.collection("attendance").doc(code).collection("Dates").get()
-        const dates = []
-        snapshot.docs.map(doc => dates.push(doc.data()));
-        setDates(dates);
-    };
-*/        
-
-   
 
    useEffect(() => {
         navigation.setOptions({ title: props.route.params.code });
@@ -65,7 +54,7 @@ function CourseTeacher (props) {
     
   )
 }
-
+/*
 const styles = StyleSheet.create({
     surface: {
       padding: 15,
@@ -84,6 +73,6 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignSelf: 'center',
     }
-  });
+  });*/
 
 export default CourseTeacher;

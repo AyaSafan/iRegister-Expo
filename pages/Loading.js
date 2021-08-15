@@ -5,6 +5,7 @@ import { ActivityIndicator, Colors } from 'react-native-paper';
 import firebase from 'firebase/app'
 import "firebase/auth"
 
+import {styles} from '../styles'
 
 export default class Loading extends React.Component {
 
@@ -24,10 +25,11 @@ export default class Loading extends React.Component {
     );
   }
 }
+/*
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center"
   }
-});
+});*/

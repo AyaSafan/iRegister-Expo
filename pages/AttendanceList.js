@@ -6,10 +6,10 @@ import { ActivityIndicator, Colors } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { useState, useEffect } from 'react';
 
-//import firebase from 'firebase/app'
 
 import AttendItem from '../components/AttendItem';
 import {getRegistration} from '../functions';
+import {styles} from '../styles'
 
 function AttendanceList (props){
 
@@ -17,22 +17,12 @@ function AttendanceList (props){
    
    const [students, setRegisteration] = useState([]);
    const [isLoading, setLoading] = useState(true);
-/*   
-   const getRegistration= async (code) =>{
-    const db = firebase.firestore(); 
-    const doc = await db.collection("registration").doc(code).get()
-    const students =  doc.data().students;
-    setRegisteration(students);
-
-};
-    
-*/
 
 
-useEffect(() => {
-    navigation.setOptions({ title: props.route.params.attendance.date });
-    getRegistration(props.route.params.code).then((students)=> {setRegisteration(students); setLoading(false)})    
-}, []);
+  useEffect(() => {
+      navigation.setOptions({ title: props.route.params.attendance.date });
+      getRegistration(props.route.params.code).then((students)=> {setRegisteration(students); setLoading(false)})    
+  }, []);
 
 
 
@@ -43,7 +33,7 @@ useEffect(() => {
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}> 
          {students.length > 0?  
-        <Surface style={styles.surface}>            
+        <Surface style={{...styles.surface, marginTop: 32}}>            
             {students?.map((student, index) => {return <AttendItem key={index} student={student} attendance={props.route.params.attendance}/>; })} 
         </Surface> 
           : null}   
@@ -52,7 +42,7 @@ useEffect(() => {
   </SafeAreaView>       
   );
 }
-
+/*
 const styles = StyleSheet.create({
     surface: {
       padding: 15,
@@ -72,5 +62,5 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignSelf: 'center',
     }
-  });
+  });*/
 export default AttendanceList;

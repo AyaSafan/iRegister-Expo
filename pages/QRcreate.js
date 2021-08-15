@@ -10,6 +10,8 @@ import { getCourses } from '../actions'
 
 import Message from '../components/Message'
 import {formatDate, havePermission} from '../functions'
+import {styles} from '../styles'
+
 
 class QRcreate extends Component {
 
@@ -17,31 +19,13 @@ class QRcreate extends Component {
   state ={    
     date: null,
     time: null,
-    //dateTime: null,
     timeStamp: null,
-    //exp: null,
     errorMessage: null,
 
     code: null,
     permission: false,
     visibility: false
   };
-/*
-  formatandSaveDate(date){
-    var dd = date.getDay();
-    var mm = date.getMonth(); 
-    var yyyy = date.getFullYear();
-    var h = date.getHours();
-    var m = date.getMinutes();
-    dd = dd < 10 ? "0" + dd : dd;
-    mm = mm < 10 ? "0" + mm : mm;
-    h = h < 10 ? "0" + h : h;
-    m = m < 10 ? "0" + m : m;
-    var date = dd + '.'+ mm + '.'+ yyyy
-    //var dateTime = date + " " + h	+ ":" + m;
-    this.setState({date});
-    //this.setState({dateTime});
-  }*/
 
   setTime = () =>{
     var now = new Date();
@@ -49,34 +33,21 @@ class QRcreate extends Component {
     this.setState({date: formattedDate.date, time: formattedDate.time});
     var timeStamp = now.getTime();
     this.setState({timeStamp});    
-    //this.formatandSaveDate(now);
   }
 
   increaseTime = () =>{
     var timeStamp = this.state.timeStamp + (10*60*1000)
     this.setState({timeStamp});
     var date = new Date(timeStamp);
-    //date.setTime(timeStamp);    
     var formattedDate = formatDate(date)
     this.setState({date: formattedDate.date, time: formattedDate.time});
-    //this.setState({date: date.date, time: date.time}); 
-    //this.formatandSaveDate(date);
+
   }
 
   getPermission(code){
     var permission = havePermission(code,this.props.courses);
     this.setState({permission})
     permission? this.setState({errorMessage: null }): this.setState({errorMessage: "Course permission denied" });
-    /*
-    for(let i = 0; i < this.props.courses.length; i++ ){
-      if(code == this.props.courses[i].code){
-        this.setState({permission : true})
-        this.setState({errorMessage: null })
-        break;
-      }else{
-        this.setState({permission : false})
-        this.setState({errorMessage: "Permission for this course failed" })      }
-    }*/
   }
 
   clearErrorMessage = () => {
@@ -122,19 +93,13 @@ class QRcreate extends Component {
 
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={styles.container}
+      style={{flex:1}}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 
       <View style={styles.sectionContainer}>
 
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-around',
-          alignItems: 'center',
-          paddingBottom: 20
-        }}>
+      <View style={styles.logo}>
       
       {this.state.permission? 
       <Pressable onPress={() => this.setState({visibility:  true})}>
@@ -186,7 +151,7 @@ class QRcreate extends Component {
     )
     }
 }
-
+/*
 const styles = StyleSheet.create({
     sectionContainer: {
       paddingHorizontal: 24,
@@ -198,7 +163,6 @@ const styles = StyleSheet.create({
     modalContent: {
       justifyContent: 'center',
       alignItems: 'center',
-      //borderColor: 'rgba(0, 0, 0, 1)',
       margin: 0
     },
     container: {
@@ -209,7 +173,7 @@ const styles = StyleSheet.create({
       flex: 1,
       justifyContent: "space-around"
     },
-  });
+  });*/
 
 
 const mapStateToProps = state => {

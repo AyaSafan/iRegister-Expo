@@ -5,10 +5,7 @@ import { Appbar, Divider, Drawer , Surface} from 'react-native-paper';
 
 import { connect } from 'react-redux';
 import {logout} from '../actions';
-
-
-//import firebase from 'firebase/app'
-//import "firebase/auth"
+import {styles} from '../styles'
 
 
 class More extends Component {
@@ -29,7 +26,7 @@ class More extends Component {
       <Appbar.Header >
         <Appbar.Content  style={{ alignItems: 'center' }}  title="Settings" />
       </Appbar.Header>
-      <Surface style={styles.surface}>
+      <Surface style={{...styles.surface, marginTop: 32}}>
         <Drawer.Item
         icon="account"
         label= {this.props.currentUser? this.props.currentUser.displayname : "loading ..."}
@@ -52,7 +49,7 @@ class More extends Component {
     );
   }
 }
-
+/*
 const styles = StyleSheet.create({
   surface: {
     padding: 15,
@@ -60,13 +57,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
     elevation: 4,
     borderRadius: 8,
-
     marginTop: 32
   },
   textmuted:{
     color: '#6c757d'
   }
-});
+});*/
 const mapStateToProps = state => {
     return {currentUser: state.currentUser}
 }

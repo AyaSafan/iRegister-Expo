@@ -9,10 +9,11 @@ import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useFonts } from 'expo-font';
 
-//import firebase from 'firebase/app'
 
 import DateItem from '../components/DateItem';
-import {getStatistics} from '../functions'
+import {getStatistics} from '../functions';
+import {styles} from '../styles';
+
 
 function Course (props) {
 
@@ -25,29 +26,6 @@ function Course (props) {
     const [isLoading, setLoading] = useState(true);
 
     const currentUser = useSelector((state) => state.currentUser)       
-/*
-    const getDates= async (code) =>{
-        const db = firebase.firestore(); 
-        const snapshot = await db.collection("attendance").doc(code).collection("Dates").get()
-        const dates = []
-        snapshot.docs.map(doc => dates.push(doc.data()));
-        setDates(dates);
-
-        //getStatistics
-        let total = 0;
-        let attended = 0;
-        for (let i = 0; i < dates.length; i++) {
-            total +=1
-            if(dates[i].students.includes(currentUser.uid)){
-                attended +=1;
-            }       
-        }
-        setAttend(attended);
-        setTotal(total)
- 
-    };
-        
-*/
    
 
    useEffect(() => {
@@ -114,7 +92,7 @@ function Course (props) {
         </SafeAreaView> 
     )
     }
-
+/*
 const styles = StyleSheet.create({
     surface: {
       padding: 15,
@@ -132,6 +110,6 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignSelf: 'center',
     }
-  });
+  });*/
 
 export default Course;

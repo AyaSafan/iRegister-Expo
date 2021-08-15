@@ -5,10 +5,8 @@ import {TextInput, Button} from 'react-native-paper';
 import firebase from 'firebase/app'
 import "firebase/auth"
 
+import {styles} from '../styles'
 import { Message } from '../components/Message';
-
-
-
 
 class Login extends Component {
   
@@ -46,14 +44,14 @@ class Login extends Component {
       <SafeAreaView style={{flex: 1, justifyContent: 'center'}}>
         <KeyboardAvoidingView  style = {{ flex: 1 }}   {...(Platform.OS === 'ios' && { behavior: 'padding' })}>
 
-          <ScrollView style={{flex: 1, paddingVertical: 50}}
+          <ScrollView style={{flex: 1}}
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}>
 
-            <View style={{alignSelf: 'center'}}>
+      <View style={styles.sectionContainer}>
+            <View style={styles.logo}>
             <Image  source={require('../assets/iRegister_is_.png')} style={{alignSelf: 'center'}}/>
             </View>
-            <View style={styles.sectionContainer}>
 
               <TextInput style={styles.margin} mode='outlined'
               label="Email"
@@ -81,16 +79,18 @@ class Login extends Component {
   }
 }
 
-
+/*
 const styles = StyleSheet.create({
   sectionContainer: {
-    marginTop: 24,
+    //marginTop: 24,
+    //paddingHorizontal: 24,
     paddingHorizontal: 24,
+    paddingVertical: 100
   },
   margin:{
     marginVertical: 5
   },
 });
-
+*/
 
 export default Login;

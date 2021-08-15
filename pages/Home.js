@@ -1,13 +1,15 @@
 import React, { Component } from 'react'; 
 import {StyleSheet,  View, FlatList } from 'react-native';
 import { Searchbar } from 'react-native-paper';
+import filter from 'lodash.filter'
 
 import { connect } from 'react-redux';
 import { getCourses } from '../actions'
 
 import CourseItem from '../components/CourseItem';
+import {styles} from '../styles'
 
-import filter from 'lodash.filter'
+
 
 
 class Home extends Component {
@@ -53,7 +55,7 @@ class Home extends Component {
     );
 
     return (
-    <View style={{flex: 1}}>
+    <View style={styles.container}>
       <Searchbar style={{margin: 10, marginTop: 32}}
         placeholder="Search"
         onChangeText={query => { this.handleSearch(query) }}
@@ -70,7 +72,7 @@ class Home extends Component {
     );
   }
 }
-
+/*
 const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -78,7 +80,7 @@ const styles = StyleSheet.create({
       justifyContent: 'center'
     }
   });
-
+*/
 
 const mapStateToProps = state => {
     return {currentUser: state.currentUser, courses: state.courses}
