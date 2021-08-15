@@ -15,7 +15,7 @@ navigate = () => this.props.navigation.navigate('AttendanceList', {code: this.pr
 render() {
     return (
         <View>
-        {this.props.info.role == "teacher"?
+        {this.props.currentUser.role == "teacher"?
         <List.Item
             title={this.props.attendance.date}
             left={props => <List.Icon {...props} icon="calendar" />}
@@ -36,7 +36,7 @@ render() {
 }
 //export default DateItem;
 const mapStateToProps = state => {
-    return {currentUser: state.currentUser, info: state.info}
+    return {currentUser: state.currentUser}
 }
   
 export default connect(mapStateToProps)(DateItem)

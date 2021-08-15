@@ -7,13 +7,14 @@ import {login} from '../actions';
 
 
 
-import firebase from 'firebase/app'
-import "firebase/auth"
+//import firebase from 'firebase/app'
+//import "firebase/auth"
 
 
 class LoadingMain extends React.Component { 
 
   componentDidMount() {
+    /*
     //Get user
     const currentUser  = firebase.auth().currentUser; 
     //Get user extra info
@@ -22,8 +23,19 @@ class LoadingMain extends React.Component {
       this.props.dispatch(login(currentUser, user.data()));
       this.props.navigation.replace("Main");
     })
-    .catch(error => console.log(error));
+    .catch(error => console.log(error));*/
+    this.props.dispatch(login).then(() => {
+      this.props.navigation.replace("Main");
+    })
+    //this.props.navigation.replace("Main");
   }
+  /*
+  componentDidUpdate(prevProps) {
+    // Typical usage (don't forget to compare props):
+    if (this.props.currentUser.uid) {
+      this.props.navigation.replace("Main");
+    }
+  }*/
 
 
   render() {
@@ -46,7 +58,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => {
-  return {currentUser: state.currentUser, info: state.info}
+  return {currentUser: state.currentUser}
 }
 
 const mapDispatchToProps = dispatch => {

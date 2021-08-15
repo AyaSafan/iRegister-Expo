@@ -24,8 +24,8 @@ class Home extends Component {
     this.setState({ courses })
   }
 
-  contains = ({ code, name, teacherID }, query) => {
-    if (name.toLowerCase().includes(query) || code.toLowerCase().includes(query)) {
+  contains = (course, query) => {
+    if (course.name.toLowerCase().includes(query) || course.code.toLowerCase().includes(query)) {
       return true
     }
     return false
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
 
 
 const mapStateToProps = state => {
-    return {currentUser: state.currentUser, info: state.info, courses: state.courses}
+    return {currentUser: state.currentUser, courses: state.courses}
 }
 
 const mapDispatchToProps = dispatch => {

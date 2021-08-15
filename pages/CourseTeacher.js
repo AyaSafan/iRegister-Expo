@@ -1,15 +1,18 @@
 import React from 'react'; 
 import { StyleSheet, ScrollView, SafeAreaView, View , Text} from 'react-native';
 import { Surface } from 'react-native-paper';
+import { ActivityIndicator, Colors } from 'react-native-paper';
+
 
 
 import { useNavigation } from '@react-navigation/native';
 import { useState, useEffect } from 'react';
 
 
-import firebase from 'firebase/app'
+//import firebase from 'firebase/app'
 
 import DateItem from '../components/DateItem';
+import {getDates} from '../functions'
 
 function CourseTeacher (props) {
 
@@ -17,8 +20,9 @@ function CourseTeacher (props) {
     const navigation = useNavigation() ;
 
     const [dates, setDates] = useState([]);
+    const [isLoading, setLoading] = useState(true);
 
-
+/*
     const getDates= async (code) =>{
         const db = firebase.firestore(); 
         const snapshot = await db.collection("attendance").doc(code).collection("Dates").get()
@@ -26,19 +30,20 @@ function CourseTeacher (props) {
         snapshot.docs.map(doc => dates.push(doc.data()));
         setDates(dates);
     };
-        
+*/        
 
    
 
    useEffect(() => {
         navigation.setOptions({ title: props.route.params.code });
-        getDates(props.route.params.code);
+        getDates(props.route.params.code).then((dates)=> {setDates(dates); setLoading(false)});
    }, []);
 
 
 
-    return (
-        <SafeAreaView> 
+  return (
+    <SafeAreaView style={{flex: 1}}> 
+      {isLoading?  <View style={styles.loading}><ActivityIndicator animating={true} color={Colors.red800} size="large"/></View> :
         <ScrollView
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}> 
@@ -48,16 +53,18 @@ function CourseTeacher (props) {
                     <Text style={styles.textmuted}>{ props.route.params.code }</Text>
                     <Text>{ props.route.params.name }</Text>
             </Surface>
-
-            <Surface style={styles.surface}>
-            {dates.map((attendance, index) => {return <DateItem key={index} code={props.route.params.code} attendance={attendance} navigation={navigation}/>; })}
-            </Surface> 
-
+              {dates.length > 0? 
+                <Surface style={styles.surface}>
+                {dates?.map((attendance, index) => {return <DateItem key={index} code={props.route.params.code} attendance={attendance} navigation={navigation}/>; })}
+                </Surface> 
+              : null}
             </View>
         </ScrollView> 
-        </SafeAreaView> 
-    )
-    }
+      }
+    </SafeAreaView> 
+    
+  )
+}
 
 const styles = StyleSheet.create({
     surface: {
@@ -70,6 +77,12 @@ const styles = StyleSheet.create({
     },
     textmuted:{
       color: '#6c757d'
+    },
+    loading: {
+      flex : 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      alignSelf: 'center',
     }
   });
 

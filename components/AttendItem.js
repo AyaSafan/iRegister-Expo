@@ -4,6 +4,7 @@ import { List, Divider } from 'react-native-paper';
 import firebase from 'firebase/app'
 
 class AttendItem extends Component {
+    /*
     state={
         displayName:""
     }
@@ -14,13 +15,14 @@ class AttendItem extends Component {
     };
     async componentDidMount(){
         this.getName(this.props.uid);
-    };
+    };*/
     render() {
+        var attended = this.props.attendance.students.includes(this.props.student.uid);
         return (<>
         <List.Item
-            title={this.state.displayName}
-            right={props => this.props.attendance.students.includes(this.props.uid) ? <List.Icon {...props} icon="check-circle" color={"rgb(11, 184, 218)"}/>: <List.Icon {...props} icon="close-circle" color={"red"}/>}
-            style={this.props.attendance.students.includes(this.props.uid) ? null: {opacity: 0.4}}
+            title={this.props.student.displayname}
+            right={props => attended ? <List.Icon {...props} icon="check-circle" color={"rgb(11, 184, 218)"}/>: <List.Icon {...props} icon="close-circle" color={"red"}/>}
+            style={attended ? null: {opacity: 0.4}}
         />
         <Divider /></>
 );

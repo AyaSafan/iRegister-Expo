@@ -15,7 +15,7 @@ class Main extends Component {
     routes: [
       { key: 'more', title: 'More', icon: 'account-cog' },
       { key: 'home', title: 'Home', icon: 'home' },
-      { key: 'qrscan', title: 'QR', icon: this.props.info.role == "teacher"? 'qrcode-edit': 'qrcode-scan' },
+      { key: 'qrscan', title: 'QR', icon: this.props.currentUser.role == "teacher"? 'qrcode-edit': 'qrcode-scan' },
     ],
   };
     
@@ -24,7 +24,7 @@ class Main extends Component {
   _renderScene = BottomNavigation.SceneMap({
     more: () => <More navigation={this.props.navigation}/>,
     home: () => <Home navigation={this.props.navigation}/>,
-    qrscan: () => this.props.info.role == 'teacher' ? <QRcreate/> : <QRscan/>,
+    qrscan: () => this.props.currentUser.role == 'teacher' ? <QRcreate/> : <QRscan/>,
   });
 
   render() {
@@ -41,7 +41,7 @@ class Main extends Component {
 }
 
 const mapStateToProps = state => {
-  return {currentUser: state.currentUser, info: state.info}
+  return {currentUser: state.currentUser}
 }
 
 export default connect(mapStateToProps)(Main)

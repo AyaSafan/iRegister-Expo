@@ -9,21 +9,24 @@ import { connect } from 'react-redux';
 import { getCourses } from '../actions'
 
 import Message from '../components/Message'
+import {formatDate, havePermission} from '../functions'
 
 class QRcreate extends Component {
 
       
-  state ={
-    code: null,
+  state ={    
     date: null,
-    dateTime: null,
     time: null,
-    exp: null,
+    //dateTime: null,
+    timeStamp: null,
+    //exp: null,
     errorMessage: null,
+
+    code: null,
     permission: false,
     visibility: false
   };
-
+/*
   formatandSaveDate(date){
     var dd = date.getDay();
     var mm = date.getMonth(); 
@@ -35,27 +38,36 @@ class QRcreate extends Component {
     h = h < 10 ? "0" + h : h;
     m = m < 10 ? "0" + m : m;
     var date = dd + '.'+ mm + '.'+ yyyy
-    var dateTime = date + " " + h	+ ":" + m;
+    //var dateTime = date + " " + h	+ ":" + m;
     this.setState({date});
-    this.setState({dateTime});
-  }
+    //this.setState({dateTime});
+  }*/
 
   setTime = () =>{
     var now = new Date();
-    var time = now.getTime();
-    this.setState({time});
-    this.formatandSaveDate(now);
+    var formattedDate = formatDate(now)
+    this.setState({date: formattedDate.date, time: formattedDate.time});
+    var timeStamp = now.getTime();
+    this.setState({timeStamp});    
+    //this.formatandSaveDate(now);
   }
 
-  increaseDate = () =>{
-    var d = new Date();
-    var time = this.state.time + (10*60*1000)
-    d.setTime(time);
-    this.setState({time}); 
-    this.formatandSaveDate(d);
+  increaseTime = () =>{
+    var timeStamp = this.state.timeStamp + (10*60*1000)
+    this.setState({timeStamp});
+    var date = new Date(timeStamp);
+    //date.setTime(timeStamp);    
+    var formattedDate = formatDate(date)
+    this.setState({date: formattedDate.date, time: formattedDate.time});
+    //this.setState({date: date.date, time: date.time}); 
+    //this.formatandSaveDate(date);
   }
 
   getPermission(code){
+    var permission = havePermission(code,this.props.courses);
+    this.setState({permission})
+    permission? this.setState({errorMessage: null }): this.setState({errorMessage: "Course permission denied" });
+    /*
     for(let i = 0; i < this.props.courses.length; i++ ){
       if(code == this.props.courses[i].code){
         this.setState({permission : true})
@@ -64,7 +76,7 @@ class QRcreate extends Component {
       }else{
         this.setState({permission : false})
         this.setState({errorMessage: "Permission for this course failed" })      }
-    }
+    }*/
   }
 
   clearErrorMessage = () => {
@@ -81,9 +93,9 @@ class QRcreate extends Component {
 
 
   render() {
+    let logoFromFile = require('../assets/click.png');
     return (
-    <>
-      
+    <>      
       
       <Modal
         style={styles.modalContent}
@@ -95,14 +107,16 @@ class QRcreate extends Component {
         animationOut={'slideOutRight'}
       >
         <TouchableWithoutFeedback onPress={() =>  this.setState({visibility: false})}>
+          <View style={styles.inner}>
           <View style={{flex: 1, justifyContent: 'center', alignSelf: 'center' }}>
             <QRCode 
                       size={250}  
-                      value={JSON.stringify({code: this.state.code, dateTime: this.state.dateTime})}
+                      value={JSON.stringify({code: this.state.code, date: this.state.date, time: this.state.time })}
                       enableLinearGradient = {true}
                       linearGradient = {['rgb(204,51,0)','rgb(0,0,0)']	}
             /> 
           </View> 
+          </View>
           </TouchableWithoutFeedback> 
         </Modal>
 
@@ -126,9 +140,11 @@ class QRcreate extends Component {
       <Pressable onPress={() => this.setState({visibility:  true})}>
         <QRCode 
                       size={150}  
-                      value={JSON.stringify({code: this.state.code, dateTime: this.state.dateTime})}
+                      value={JSON.stringify({code: this.state.code, date: this.state.date, time: this.state.time })}
                       enableLinearGradient = {true}
                       linearGradient = {['rgb(204,51,0)','rgb(0,0,0)']	}
+                      logo={logoFromFile}
+                      logoSize={50}
         />
       </Pressable>
       : <MaterialCommunityIcons name="qrcode-edit" size={150} color="black" />} 
@@ -144,9 +160,9 @@ class QRcreate extends Component {
 
       <TextInput mode='outlined' disabled style={styles.margin}
       label="Expiration"
-      value={this.state.dateTime}
+      value={this.state.date + " "+ this.state.time}
       left={
-      <TextInput.Icon name="plus" onPress={this.increaseDate} forceTextInputFocus={false} />
+      <TextInput.Icon name="plus" onPress={this.increaseTime} forceTextInputFocus={false} />
       }
       right={
       <TextInput.Icon name="reload" onPress={this.setTime} forceTextInputFocus={false} />
@@ -182,8 +198,7 @@ const styles = StyleSheet.create({
     modalContent: {
       justifyContent: 'center',
       alignItems: 'center',
-      borderRadius: 4,
-      borderColor: 'rgba(0, 0, 0, 0.1)',
+      //borderColor: 'rgba(0, 0, 0, 1)',
       margin: 0
     },
     container: {
@@ -198,7 +213,7 @@ const styles = StyleSheet.create({
 
 
 const mapStateToProps = state => {
-  return {currentUser: state.currentUser, info: state.info, courses: state.courses}
+  return {currentUser: state.currentUser, courses: state.courses}
 }
 
 const mapDispatchToProps = dispatch => {

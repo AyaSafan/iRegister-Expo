@@ -7,9 +7,8 @@ import { connect } from 'react-redux';
 import {logout} from '../actions';
 
 
-import firebase from 'firebase/app'
-import "firebase/auth"
-
+//import firebase from 'firebase/app'
+//import "firebase/auth"
 
 
 class More extends Component {
@@ -19,13 +18,8 @@ class More extends Component {
   }
 
   logoutUser = () => {
-        firebase
-          .auth()
-          .signOut()
-          .then(() => {
-            this.props.dispatch(logout());
-            this.props.navigation.navigate("Login");        
-          });
+    this.props.dispatch(logout)
+    .then(() => { this.props.navigation.navigate("Login");});
   };   
 
 
@@ -38,7 +32,7 @@ class More extends Component {
       <Surface style={styles.surface}>
         <Drawer.Item
         icon="account"
-        label= {this.props.info? this.props.info.displayname : "loading ..."}
+        label= {this.props.currentUser? this.props.currentUser.displayname : "loading ..."}
         />
           
         <Drawer.Item
@@ -74,7 +68,7 @@ const styles = StyleSheet.create({
   }
 });
 const mapStateToProps = state => {
-    return {currentUser: state.currentUser, info: state.info}
+    return {currentUser: state.currentUser}
 }
 
 const mapDispatchToProps = dispatch => {

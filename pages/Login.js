@@ -13,7 +13,6 @@ import { Message } from '../components/Message';
 class Login extends Component {
   
   state = { email: "", password: "", errorMessage: null };
-
   
   handleLogin = () => {
     const { email, password } = this.state;
@@ -36,9 +35,7 @@ class Login extends Component {
     this.setState({
       errorMessage: null
     })
-  }
-
-  
+  }  
   
   
   

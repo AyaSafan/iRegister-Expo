@@ -2,16 +2,17 @@ import React from 'react';
 import { StyleSheet, ScrollView, SafeAreaView, View , Text} from 'react-native';
 import * as Progress from 'react-native-progress';
 import { Surface } from 'react-native-paper';
-
+import { ActivityIndicator, Colors } from 'react-native-paper';
 
 import { useNavigation } from '@react-navigation/native';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useFonts } from 'expo-font';
 
-import firebase from 'firebase/app'
+//import firebase from 'firebase/app'
 
 import DateItem from '../components/DateItem';
+import {getStatistics} from '../functions'
 
 function Course (props) {
 
@@ -21,9 +22,10 @@ function Course (props) {
     const [dates, setDates] = useState([]);
     const [attended, setAttend] = useState(0);
     const [total, setTotal] = useState(0);
+    const [isLoading, setLoading] = useState(true);
 
     const currentUser = useSelector((state) => state.currentUser)       
-
+/*
     const getDates= async (code) =>{
         const db = firebase.firestore(); 
         const snapshot = await db.collection("attendance").doc(code).collection("Dates").get()
@@ -45,12 +47,13 @@ function Course (props) {
  
     };
         
-
+*/
    
 
    useEffect(() => {
         navigation.setOptions({ title: props.route.params.code });
-        getDates(props.route.params.code);
+        getStatistics(props.route.params.code, currentUser).then((res)=> 
+        {setDates(res.dates);  setAttend(res.attended);   setTotal(res.total); setLoading(false)});
    }, []);
 
    const [loaded] = useFonts({
@@ -63,7 +66,8 @@ function Course (props) {
 
 
     return (
-        <SafeAreaView> 
+      <SafeAreaView style={{flex: 1}}> 
+      {isLoading?  <View style={styles.loading}><ActivityIndicator animating={true} color={Colors.red800} size="large"/></View> :
         <ScrollView
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}> 
@@ -105,7 +109,8 @@ function Course (props) {
             </Surface> 
 
             </View>
-        </ScrollView> 
+        </ScrollView>
+        } 
         </SafeAreaView> 
     )
     }
@@ -120,6 +125,12 @@ const styles = StyleSheet.create({
     },
     textmuted:{
       color: '#6c757d'
+    },
+    loading: {
+      flex : 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      alignSelf: 'center',
     }
   });
 
