@@ -1,96 +1,132 @@
-import React from 'react'; 
-import {styles} from '../styles';
+import React from "react";
+import { styles } from "../styles";
 
-import { ScrollView, SafeAreaView, View , Text} from 'react-native';
-import { ActivityIndicator, Colors, Surface } from 'react-native-paper';
+import { ScrollView, SafeAreaView, View, Text } from "react-native";
+import {
+  ActivityIndicator,
+  Colors,
+  Surface,
+  Divider,
+} from "react-native-paper";
 
-import * as Progress from 'react-native-progress';
-import { useFonts } from 'expo-font';
+import * as Progress from "react-native-progress";
+import { useFonts } from "expo-font";
 
-import DateItem from '../components/DateItem';
-import {getStatistics} from '../functions';
+import DateItem from "../components/DateItem";
+import { getStatistics } from "../functions";
 
-import { useState, useEffect } from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { useSelector } from 'react-redux';
+import { useState, useEffect } from "react";
+import { useNavigation } from "@react-navigation/native";
+import { useSelector } from "react-redux";
 
-function Course (props) {
+function Course(props) {
+  const navigation = useNavigation();
 
-  
-    const navigation = useNavigation() ;
+  const [dates, setDates] = useState([]);
+  const [attended, setAttend] = useState(0);
+  const [total, setTotal] = useState(0);
+  //const [percentage, setPercentage] = useState(0);
+  const [isLoading, setLoading] = useState(true);
 
-    const [dates, setDates] = useState([]);
-    const [attended, setAttend] = useState(0);
-    const [total, setTotal] = useState(0);
-    const [isLoading, setLoading] = useState(true);
+  const currentUser = useSelector((state) => state.currentUser);
 
-    const currentUser = useSelector((state) => state.currentUser)       
-   
-
-   useEffect(() => {
-        navigation.setOptions({ title: props.route.params.code });
-        getStatistics(props.route.params.code, currentUser).then((res)=> 
-        {setDates(res.dates);  setAttend(res.attended);   setTotal(res.total); setLoading(false)});
-   }, []);
-
-   const [loaded] = useFonts({
-    Roboto_Thin: require('../assets/fonts/Roboto-Thin.ttf'),
+  useEffect(() => {
+    navigation.setOptions({ title: props.route.params.code });
+    getStatistics(props.route.params.code, currentUser).then((res) => {
+      setDates(res.dates);
+      setAttend(res.attended);
+      setTotal(res.total);
+      //setPercentage(res.percentage);
+      setLoading(false);
     });
-    
-    if (!loaded) {
-      return null;
-    }
+  }, []);
 
+  const [loaded] = useFonts({
+    Roboto_Thin: require("../assets/fonts/Roboto-Thin.ttf"),
+  });
 
-    return (
-      <SafeAreaView style={{flex: 1}}> 
-      {isLoading?  <View style={styles.loading}><ActivityIndicator animating={true} color={Colors.red800} size="large"/></View> :
+  if (!loaded) {
+    return null;
+  }
+
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      {isLoading ? (
+        <View style={styles.loading}>
+          <ActivityIndicator
+            animating={true}
+            color={Colors.red800}
+            size="large"
+          />
+        </View>
+      ) : (
         <ScrollView
           showsVerticalScrollIndicator={false}
-          showsHorizontalScrollIndicator={false}> 
-        <View style={{marginVertical: 32}}>
-
+          showsHorizontalScrollIndicator={false}
+        >
+          <View style={{ marginVertical: 32 }}>
             <Surface style={styles.surface}>
-                    <Text style={styles.textmuted}>{ props.route.params.code }</Text>
-                    <Text>{ props.route.params.name }</Text>
+              <Text style={styles.textmuted}>{props.route.params.code}</Text>
+              <Text>{props.route.params.name}</Text>
             </Surface>
 
-            <View style={{margin: 15, padding: 10, alignItems: 'center'}}>
-                <Progress.Circle progress={total == 0? 0 : attended/total}  size={150} thickness={15} showsText={true}
-                color={'rgb(11, 184, 218)'} unfilledColor={'rgba(255, 0, 0, 0.4)'} strokeCap={'round'} borderWidth={0} />
-            
-            {/*<Text style={{ alignSelf: 'flex-end', color: '#6c757d'}}> {attended}/{total}  </Text>*/}
-            
-            <View style={{flexDirection:"row", marginTop: 24}}>
-                    <View style={{flex:1}}>
-                        <View style={{justifyContent: 'flex-start',}} >
-                        <Surface style={styles.surface}>
-                                <Text style={{alignSelf: 'center', fontFamily: 'Roboto_Thin', fontSize: 30, fontWeight:'bold', color:'rgb(11, 184, 218)'}}>{ attended < 10 ? "0" + attended : attended }</Text>
-                                <Text style={{alignSelf: 'center', fontFamily: 'Roboto_Thin', fontSize: 18,}}>PRESESNT</Text>
-                        </Surface>
-                        </View>
-                    </View>
-                    <View style={{flex:1}}>
-                    <View style={{justifyContent: 'flex-start',}} >
-                    <Surface style={styles.surface}>
-                            <Text style={{alignSelf: 'center', fontFamily: 'Roboto_Thin', fontSize: 30, fontWeight:'bold', }}>{ total < 10 ? "0" + total : total  }</Text>
-                            <Text style={{alignSelf: 'center', fontFamily: 'Roboto_Thin', fontSize: 18,}}>TOTAL</Text>
-                    </Surface>
-                    </View>
-                    </View>
-            </View>
+            <View style={{ margin: 15, padding: 10, alignItems: "center" }}>
+              <Progress.Circle
+                progress={total == 0 ? 0 : attended / total}
+                size={150}
+                thickness={15}
+                showsText={true}
+                color={"rgb(11, 184, 218)"}
+                unfilledColor={"rgba(255, 0, 0, 0.4)"}
+                strokeCap={"round"}
+                borderWidth={0}
+              />
 
+              <View style={{ flexDirection: "row", marginTop: 24 }}>
+                <View style={{ flex: 1 }}>
+                  <View style={{ justifyContent: "flex-start" }}>
+                    <Surface style={styles.surface}>
+                      <Text
+                        style={{
+                          ...styles.cardTextBold,
+                          color: "rgb(11, 184, 218)",
+                        }}
+                      >
+                        {attended < 10 ? "0" + attended : attended}
+                      </Text>
+                      <Text style={styles.cardTextThin}>PRESESNT</Text>
+                    </Surface>
+                  </View>
+                </View>
+                <View style={{ flex: 1 }}>
+                  <View style={{ justifyContent: "flex-start" }}>
+                    <Surface style={styles.surface}>
+                      <Text style={styles.cardTextBold}>
+                        {total < 10 ? "0" + total : total}
+                      </Text>
+                      <Text style={styles.cardTextThin}>TOTAL</Text>
+                    </Surface>
+                  </View>
+                </View>
+              </View>
             </View>
             <Surface style={styles.surface}>
-            {dates.map((attendance, index) => {return <DateItem key={index} attendance={attendance} />; })}
-            </Surface> 
-
-            </View>
+              {dates.map((attendance, index) => {
+                if (dates.length === index + 1) {
+                  return <DateItem key={index} attendance={attendance} />;
+                } else {
+                  return [
+                    <DateItem key={index} attendance={attendance} />,
+                    <Divider />,
+                  ];
+                }
+              })}
+            </Surface>
+          </View>
         </ScrollView>
-        } 
-        </SafeAreaView> 
-    )
-    }
-
+      )}
+    </SafeAreaView>
+  );
+}
 
 export default Course;

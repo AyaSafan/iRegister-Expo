@@ -1,53 +1,62 @@
-import React from 'react';
-import {styles} from '../styles'
+import React from "react";
+import { styles } from "../styles";
 
-import { Text, View, Button } from 'react-native';
+import { View, StyleSheet , Alert} from "react-native";
+import { Snackbar, Button } from "react-native-paper";
 
-import { BarCodeScanner } from 'expo-barcode-scanner';
+import { BarCodeScanner } from "expo-barcode-scanner";
 
-import { useState, useEffect } from 'react';
+import {addAttend} from '../functions'
+
+import { useState, useEffect } from "react";
+import { useNavigation } from "@react-navigation/native";
+import { useSelector } from "react-redux";
+
 
 function QRscan() {
+  const navigation = useNavigation();
+
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
+  const currentUser = useSelector((state) => state.currentUser);
 
   useEffect(() => {
     (async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
-      setHasPermission(status === 'granted');
+      setHasPermission(status === "granted");
     })();
   }, []);
 
-  const handleBarCodeScanned = ({ type, data }) => {
+  const handleBarCodeScanned = ({data }) => {
     setScanned(true);
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+    let qr_obj = JSON.parse(data);
+    addAttend(qr_obj.code, qr_obj.date, qr_obj.timeStamp, qr_obj.secretKey, currentUser.uid)
+    .then((done)=> {
+      Alert.alert("",done.message);
+      done.code? navigation.navigate("Course",  { code: done.code, name: done.name }): undefined;
+    })
+    //alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+   
   };
 
   if (hasPermission === null) {
-    return <Text>Requesting for camera permission</Text>;
+    return <Snackbar visible={true}>Requesting for camera permission</Snackbar>;
   }
   if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
+    return <Snackbar visible={true}>No access to camera</Snackbar>;
   }
 
   return (
-    <View style={styles.container}>
+    <View style={{...styles.container, marginTop:32,  padding:0 }}>
       <BarCodeScanner
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-        style={StyleSheet.absoluteFillObject}
+        style={{...StyleSheet.absoluteFillObject, ...styles.scanner}}
       />
-      {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />}
+      {scanned && (
+        <Button icon="qrcode-scan" mode="contained" onPress={() => setScanned(false)} >Tap to Scan Again</Button>
+      )}
     </View>
   );
 }
-
-/*
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-  },
-});*/
 
 export default QRscan;
