@@ -21,10 +21,9 @@ class DateItem extends React.Component {
       this.props.currentUser.uid
     );
     return (
-      <View>
+      <View key={this.props.key}>
         {this.props.currentUser.role == "teacher" ? (
           <List.Item
-            key={this.props.attendance.date}
             title={this.props.attendance.date}
             left={(props) => <List.Icon {...props} icon="calendar" />}
             onPress={() =>
@@ -35,8 +34,7 @@ class DateItem extends React.Component {
             }
           />
         ) : (
-          <List.Item
-            key={this.props.attendance.date}
+          <List.Item key={this.props.key}
             title={this.props.attendance.date}
             left={(props) => <List.Icon {...props} icon="calendar" />}
             right={(props) =>

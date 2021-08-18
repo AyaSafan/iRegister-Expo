@@ -57,7 +57,7 @@ class Login extends React.Component {
             >
               <View style={styles.sectionContainer}>
                 <View style={styles.logo}>
-                  <Image
+                  <Image 
                     source={require("../assets/iRegister_is_.png")}
                     style={{ alignSelf: "center" }}
                   />

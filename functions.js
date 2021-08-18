@@ -74,9 +74,9 @@ export async function getDates(code) {
 export async function getName(uid) {
   const db = firebase.firestore();
   const doc = await db.collection("users").doc(uid).get();
-  return { uid: uid, displayname: doc.data().displayname };
+  return { uid: uid, displayname: doc.data().displayname, id: doc.data().id };
 }
-export async function getRegistration(code) {
+export async function getAttendance(code, attendedStudents) {
   const db = firebase.firestore();
   const doc = await db.collection("registration").doc(code).get();
   const studentUIDs = doc.data().students;
@@ -84,14 +84,21 @@ export async function getRegistration(code) {
     studentUIDs.map((uid) => {
       return getName(uid).then((student) => student);
     })
-  );
-  return students;
+  ); //All registered students in course //[{"displayname":"Aya Safan", "uid":"EX12...., "id": "1710172"}]
+  let studentsWithAttendance = [] //[{"displayname":"Aya Safan", "uid":"EX12....","id": "1710172", "attended": true}]
+  for (let i = 0; i < students.length; i++) {
+    if (attendedStudents.includes(students[i].uid)) {
+      students[i]["attended"]= true;
+    }else{students[i]["attended"]= false;}
+    studentsWithAttendance.push(students[i]);
+  }
+  return studentsWithAttendance;
 }
 
 export async function addAttend(code, date, timeStamp, secretKey, uid) {
   const db = firebase.firestore();
   var done = {
-    message: null,
+    message: "QR scan failed.",
     code: null,
     name: null,
   };

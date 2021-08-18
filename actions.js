@@ -14,6 +14,7 @@ export async function login(dispatch, getState) {
     uid: currentUser.uid,
     email: currentUser.email,
     displayname: info.displayname,
+    id: info.id,
     role: info.role,
   };
 

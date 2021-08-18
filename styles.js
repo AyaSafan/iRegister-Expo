@@ -12,6 +12,13 @@ const baseSurface = {
   elevation: 4,
   borderRadius: 8,
 };
+
+export const theme = {
+  primary: "#dc3545",
+  accent: "#289bbd",
+  background: "#f2f2f2",
+}
+
 export const styles = StyleSheet.create({
   container: {
     ...baseContainer,
@@ -20,8 +27,9 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingVertical: 100,
   },
+
   margin: {
-    marginVertical: 5,
+    marginVertical: 4,
   },
   surface: {
     ...baseSurface,
@@ -29,12 +37,12 @@ export const styles = StyleSheet.create({
   textmuted: {
     color: "#6c757d",
   },
-
   logo: {
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
-    paddingBottom: 20,
+    marginBottom: 12,
+    height: 200,
   },
   loading: {
     flex: 1,
@@ -81,5 +89,12 @@ export const styles = StyleSheet.create({
     paddingStart: 0,
     height: "115%",
     padding: 0,
+  },
+  fab: {
+    position: 'absolute',
+    margin: 16,
+    right: 0,
+    bottom: 0,
+    backgroundColor: theme.primary
   },
 });

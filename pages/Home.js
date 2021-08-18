@@ -65,16 +65,16 @@ class Home extends React.Component {
             this.handleSearch(query);
           }}
         />
-        {this.state.courses?
-        <FlatList
-          data={this.state.courses}
-          renderItem={renderCourse}
-          keyExtractor={(course) => course.code}
-          initialNumToRender={6}
-          showsVerticalScrollIndicator={false}
-          showsHorizontalScrollIndicator={false}
-        />
-        :null}
+        {this.state.courses ? (
+          <FlatList
+            data={this.state.courses}
+            renderItem={renderCourse}
+            keyExtractor={(course) => course.code}
+            initialNumToRender={6}
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
+          />
+        ) : null}
       </View>
     );
   }

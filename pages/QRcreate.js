@@ -9,7 +9,7 @@ import {
   Pressable,
   Modal,
   TouchableWithoutFeedback,
-  Keyboard,
+  SafeAreaView,
 } from "react-native";
 import { TextInput, Button } from "react-native-paper";
 
@@ -44,7 +44,7 @@ class QRcreate extends React.Component {
   };
 
   increaseTime = () => {
-    var timeStamp = this.state.timeStamp + 10* 60 * 1000;
+    var timeStamp = this.state.timeStamp + 10 * 60 * 1000;
     this.setState({ timeStamp });
     var date = new Date(timeStamp);
     var formattedDate = formatDate(date);
@@ -113,16 +113,16 @@ class QRcreate extends React.Component {
           </TouchableWithoutFeedback>
         </Modal>
 
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          style={{ flex: 1 }}
-        >
-          <ScrollView
+        <SafeAreaView style={{ flex: 1, justifyContent: "center" }}>
+          <KeyboardAvoidingView
             style={{ flex: 1 }}
-            showsVerticalScrollIndicator={false}
-            showsHorizontalScrollIndicator={false}
+            {...(Platform.OS === "ios" && { behavior: "padding" })}
           >
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <ScrollView
+              style={{ flex: 1 }}
+              showsVerticalScrollIndicator={false}
+              showsHorizontalScrollIndicator={false}
+            >
               <View style={styles.sectionContainer}>
                 <View style={styles.logo}>
                   {this.state.permission ? (
@@ -195,10 +195,10 @@ class QRcreate extends React.Component {
                 >
                   CREATE QR
                 </Button>
-              </View>
-            </TouchableWithoutFeedback>
-          </ScrollView>
-        </KeyboardAvoidingView>
+                </View>
+            </ScrollView>
+          </KeyboardAvoidingView>
+        </SafeAreaView>
 
         {this.state.errorMessage && (
           <Message

@@ -44,7 +44,7 @@ function CourseTeacher(props) {
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
         >
-          <View style={{ marginVertical: 32 }}>
+          <View style={{ marginVertical: 24 }}>
             <Surface style={styles.surface}>
               <Text style={styles.textmuted}>{props.route.params.code}</Text>
               <Text>{props.route.params.name}</Text>
