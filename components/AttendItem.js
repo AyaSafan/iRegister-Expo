@@ -3,10 +3,10 @@ import React from "react";
 import { List, Divider } from "react-native-paper";
 
 class AttendItem extends React.Component {
+  constructor(props) {
+    super(props);
+  }
   render() {
-    /*var attended = this.props.attendance.students.includes(
-      this.props.student.uid
-    );*/
     return (
       <List.Item
         key={this.props.key}

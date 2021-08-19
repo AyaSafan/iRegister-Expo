@@ -52,7 +52,7 @@ export const styles = StyleSheet.create({
   },
   course: {
     ...baseSurface,
-    alignItems: "flex-start",
+    alignItems: "stretch",
     justifyContent: "flex-start",
     borderLeftWidth: 5,
     borderLeftColor: "rgba(255, 0, 0, 0.4)",

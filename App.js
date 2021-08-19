@@ -26,7 +26,7 @@ import "firebase/firestore";
 import {theme as stylesTheme} from "./styles"
 
 import { LogBox } from "react-native";
-LogBox.ignoreLogs(["Require cycle:", "Setting a timer"]);
+LogBox.ignoreLogs(["Require cycle:", "Setting a timer", "Warning:", "expo-permissions is now deprecated"]);
 
 var firebaseConfig = {
   apiKey: "AIzaSyC94dXTd5hAp-VWqIFB1T4vwLhS83yqe-0",

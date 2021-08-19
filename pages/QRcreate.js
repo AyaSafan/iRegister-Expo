@@ -10,13 +10,14 @@ import {
   Modal,
   TouchableWithoutFeedback,
   SafeAreaView,
+  ToastAndroid
 } from "react-native";
 import { TextInput, Button } from "react-native-paper";
 
 import QRCode from "react-native-qrcode-svg";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-import Message from "../components/Message";
+//import Message from "../components/Message";
 import { formatDate, havePermission, getKey } from "../functions";
 
 import { connect } from "react-redux";
@@ -27,7 +28,7 @@ class QRcreate extends React.Component {
     date: null,
     time: null,
     timeStamp: null,
-    errorMessage: null,
+    //errorMessage: null,
 
     code: null,
     secretKey: null,
@@ -54,9 +55,11 @@ class QRcreate extends React.Component {
   getPermission(code) {
     var permission = havePermission(code, this.props.courses);
     this.setState({ permission });
+    /*
     permission
       ? this.setState({ errorMessage: null })
-      : this.setState({ errorMessage: "Course permission denied" });
+      : this.setState({ errorMessage: "Course permission denied" });*/
+    !permission? ToastAndroid.show("Course permission denied", ToastAndroid.SHORT) : undefined;
   }
   getSecretKey(code) {
     getKey(code).then((secretKey) => this.setState({ secretKey }));
@@ -101,7 +104,6 @@ class QRcreate extends React.Component {
                   size={250}
                   value={JSON.stringify({
                     code: this.state.code,
-                    date: this.state.date,
                     timeStamp: this.state.timeStamp,
                     secretKey: this.state.secretKey,
                   })}
@@ -133,7 +135,6 @@ class QRcreate extends React.Component {
                         size={150}
                         value={JSON.stringify({
                           code: this.state.code,
-                          date: this.state.date,
                           timeStamp: this.state.timeStamp,
                           secretKey: this.state.secretKey,
                         })}
@@ -200,12 +201,12 @@ class QRcreate extends React.Component {
           </KeyboardAvoidingView>
         </SafeAreaView>
 
-        {this.state.errorMessage && (
+        {/*this.state.errorMessage && (
           <Message
             errorMessage={this.state.errorMessage}
             clearErrorMessage={this.clearErrorMessage}
           />
-        )}
+        )*/}
       </>
     );
   }

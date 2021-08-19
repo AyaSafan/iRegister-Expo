@@ -54,16 +54,14 @@ export async function getCourses(dispatch, getState) {
 
     // Get Course info for each course code
     // if codes[] is not empty
-    let courses=[]
-    if(codes.length !=0){
-    const snapshot = await db
-      .collection("courses")
-      .where("code", "in", codes)
-      .get();
-    courses = snapshot.docs.map((doc) => doc.data());
+    let courses = [];
+    if (codes.length != 0) {
+      const snapshot = await db
+        .collection("courses")
+        .where("code", "in", codes)
+        .get();
+      courses = snapshot.docs.map((doc) => doc.data());
     }
     dispatch({ type: GET_COURSES, courses: courses });
   }
 }
-
-

@@ -1,7 +1,7 @@
 import React from "react";
 import { styles } from "../styles";
 
-import { View, StyleSheet, Alert } from "react-native";
+import { View, StyleSheet, Alert, ToastAndroid } from "react-native";
 import { Snackbar, Button } from "react-native-paper";
 
 import { BarCodeScanner } from "expo-barcode-scanner";
@@ -39,13 +39,13 @@ function QRscan() {
 
     addAttend(
       qr_obj.code,
-      qr_obj.date,
       qr_obj.timeStamp,
       qr_obj.secretKey,
       currentUser.uid
     )
       .then((done) => {
-        Alert.alert("", done.message);
+        //Alert.alert("", done.message);
+        ToastAndroid.show(done.message, ToastAndroid.SHORT);
         done.code
           ? navigation.navigate("Course", { code: done.code, name: done.name })
           : undefined;

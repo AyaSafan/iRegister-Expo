@@ -85,17 +85,19 @@ export async function getAttendance(code, attendedStudents) {
       return getName(uid).then((student) => student);
     })
   ); //All registered students in course //[{"displayname":"Aya Safan", "uid":"EX12...., "id": "1710172"}]
-  let studentsWithAttendance = [] //[{"displayname":"Aya Safan", "uid":"EX12....","id": "1710172", "attended": true}]
+  let studentsWithAttendance = []; //[{"displayname":"Aya Safan", "uid":"EX12....","id": "1710172", "attended": true}]
   for (let i = 0; i < students.length; i++) {
     if (attendedStudents.includes(students[i].uid)) {
-      students[i]["attended"]= true;
-    }else{students[i]["attended"]= false;}
+      students[i]["attended"] = true;
+    } else {
+      students[i]["attended"] = false;
+    }
     studentsWithAttendance.push(students[i]);
   }
   return studentsWithAttendance;
 }
 
-export async function addAttend(code, date, timeStamp, secretKey, uid) {
+export async function addAttend(code, timeStamp, secretKey, uid) {
   const db = firebase.firestore();
   var done = {
     message: "QR scan failed.",
@@ -110,6 +112,7 @@ export async function addAttend(code, date, timeStamp, secretKey, uid) {
     done.message = `QR Code Expired.`;
     return done;
   }
+  var nowDate = formatDate(now).date;
 
   // Check if Secret Key is correct
   var doc = await db.collection("courses").doc(code).get();
@@ -130,7 +133,7 @@ export async function addAttend(code, date, timeStamp, secretKey, uid) {
     .collection("attendance")
     .doc(code)
     .collection("Dates")
-    .doc(date);
+    .doc(nowDate);
   await docRef
     .get()
     .then((doc) => {
@@ -147,17 +150,17 @@ export async function addAttend(code, date, timeStamp, secretKey, uid) {
       } else {
         //console.log("No such document!");
         var data = {
-          date: date,
+          date: nowDate,
           students: [uid],
         };
         db.collection("attendance")
           .doc(code)
           .collection("Dates")
-          .doc(date)
+          .doc(nowDate)
           .set(data);
         done.message = `${code} attendance added.`;
       }
-      //set code and name to navigate
+      //set code and name to navigate to course after attendance
       done.code = code;
       done.name = doc.data().name;
     })

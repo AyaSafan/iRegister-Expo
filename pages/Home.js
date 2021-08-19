@@ -67,6 +67,7 @@ class Home extends React.Component {
         />
         {this.state.courses ? (
           <FlatList
+            style={{flex:1, width: '100%'}}
             data={this.state.courses}
             renderItem={renderCourse}
             keyExtractor={(course) => course.code}

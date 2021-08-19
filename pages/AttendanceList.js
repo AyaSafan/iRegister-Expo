@@ -2,7 +2,7 @@ import React from "react";
 import { styles } from "../styles";
 import { theme } from "../styles";
 
-import { SafeAreaView, ScrollView, View } from "react-native";
+import { SafeAreaView, ScrollView, View, ToastAndroid } from "react-native";
 import {
   ActivityIndicator,
   Colors,
@@ -10,7 +10,6 @@ import {
   Divider,
   Chip,
   FAB,
-  ToastAndroid
 } from "react-native-paper";
 
 import AttendItem from "../components/AttendItem";
@@ -34,7 +33,10 @@ function AttendanceList(props) {
 
   useEffect(() => {
     navigation.setOptions({ title: props.route.params.attendance.date });
-    getAttendance(props.route.params.code, props.route.params.attendance.students ).then((students) => {
+    getAttendance(
+      props.route.params.code,
+      props.route.params.attendance.students
+    ).then((students) => {
       setAttendance(students);
       setSelectedStudents(students);
       setLoading(false);
@@ -42,35 +44,22 @@ function AttendanceList(props) {
   }, []);
 
   const changeSelectedStudents = () => {
-    //filter == "present"? setPresentSelected(!presentSelected) : setAbsentSelected(!absentSelected);
     if (presentSelected && absentSelected) {
       setSelectedStudents(students);
-      //console.log('both')
     } else if (!presentSelected && !absentSelected) {
       setSelectedStudents([]);
-      //console.log('none')
     } else if (presentSelected && !absentSelected) {
       let present = [];
-      students.forEach((student)=>{ student.attended? present.push(student): undefined})
-      /*
-      for (let i = 0; i < students.length; i++) {
-        if (students[i]["attended"]) {
-          present.push(students[i]);
-        }
-      }*/
+      students.forEach((student) => {
+        student.attended ? present.push(student) : undefined;
+      });
       setSelectedStudents(present);
-      //console.log('present')
     } else if (!presentSelected && absentSelected) {
       let absent = [];
-      students.forEach((student)=>{ !student.attended? absent.push(student): undefined})
-      /*
-      for (let i = 0; i < students.length; i++) {
-        if (!students[i]["attended"]) {
-          absent.push(students[i]);
-        }
-      }*/
+      students.forEach((student) => {
+        !student.attended ? absent.push(student) : undefined;
+      });
       setSelectedStudents(absent);
-      //console.log('absent')
     }
   };
 
@@ -78,21 +67,24 @@ function AttendanceList(props) {
     changeSelectedStudents();
   }, [presentSelected, absentSelected]);
 
+  const createFileContent = () => {
+    var file = selectedStudents
+      .map(function (item) {
+        return `Name: ${
+          item["displayname"]
+        } \nID: ${item["id"]}\n${item["attended"] ? "PRESENT" : "ABSENT"}\n\n`;
+      })
+      .toString();
+    var header = `${props.route.params.code} Attendance`;
+    var date = props.route.params.attendance.date;
+    file = `${header}\n${date}\n\n${file}`;
+    return file;
+  };
+
   const saveFile = async () => {
-    //console.log("file");
-    ToastAndroid.show("Downloading attendance file", ToastAndroid.SHORT);
     const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
     if (status === "granted") {
-      //create file content
-      var file = selectedStudents
-        .map(function (item) {
-          return `Name: ${item["displayname"]} \nID: ${item["id"]}\n${item["attended"]? "PRESENT": "ABSENT"}\n\n`;
-        })
-        .toString();
-      var header = `${props.route.params.code} Attendance`;
-      var date = props.route.params.attendance.date;
-      file = `${header}\n${date}\n\n${file}`;
-      //create file txt
+      const file = createFileContent();
       let fileUri =
         FileSystem.documentDirectory + `${props.route.params.code}.txt`;
       await FileSystem.writeAsStringAsync(fileUri, file, {
@@ -100,11 +92,7 @@ function AttendanceList(props) {
       });
       const asset = await MediaLibrary.createAssetAsync(fileUri);
       await MediaLibrary.createAlbumAsync("Download", asset, false);
-      ToastAndroid.showWithGravity(
-        "Download Success.",
-        ToastAndroid.SHORT,
-        ToastAndroid.CENTER
-      );
+      ToastAndroid.show("Download Succeded!", ToastAndroid.SHORT);
     }
   };
 
@@ -135,11 +123,16 @@ function AttendanceList(props) {
                 <Chip
                   icon="check-circle"
                   mode="outlined"
-                  style={{ marginHorizontal: 4 ,backgroundColor:'white', borderColor: presentSelected? theme.accent: 'gray', borderWidth: 1}}
+                  style={{
+                    marginHorizontal: 4,
+                    backgroundColor: presentSelected ? "white" : theme.background,
+                    borderColor: presentSelected ? theme.accent : "gray",
+                    borderWidth: 1,
+                  }}
                   onPress={() => {
                     setPresentSelected(!presentSelected);
                   }}
-                  selectedColor={presentSelected? theme.accent: 'gray'}
+                  selectedColor={presentSelected ? theme.accent : "gray"}
                   selected={presentSelected}
                 >
                   PRESENT
@@ -151,11 +144,16 @@ function AttendanceList(props) {
                 <Chip
                   icon="close-circle"
                   mode="outlined"
-                  style={{ marginHorizontal: 4 ,backgroundColor:'white', borderColor: absentSelected? theme.primary: 'gray', borderWidth: 1 }}
+                  style={{
+                    marginHorizontal: 4,
+                    backgroundColor: absentSelected ? "white" : theme.background,
+                    borderColor: absentSelected ? theme.primary : "gray",
+                    borderWidth: 1,
+                  }}
                   onPress={() => {
                     setAbsentSelected(!absentSelected);
                   }}
-                  selectedColor={absentSelected? theme.primary: 'gray'}
+                  selectedColor={absentSelected ? theme.primary : "gray"}
                   selected={absentSelected}
                 >
                   ABSENT
@@ -172,7 +170,6 @@ function AttendanceList(props) {
                     <AttendItem
                       key={index}
                       student={student}
-                      //attendance={props.route.params.attendance}
                     />
                   );
                 } else {
@@ -180,7 +177,6 @@ function AttendanceList(props) {
                     <AttendItem
                       key={index}
                       student={student}
-                      //attendance={props.route.params.attendance}
                     />,
                     <Divider />,
                   ];
@@ -191,13 +187,12 @@ function AttendanceList(props) {
         </ScrollView>
       )}
 
-        <FAB
-          style={styles.fab}
-          small
-          icon="download"
-          onPress={() => saveFile()}
-        />
-
+      <FAB
+        style={styles.fab}
+        small
+        icon="download"
+        onPress={() => saveFile()}
+      />
     </SafeAreaView>
   );
 }
