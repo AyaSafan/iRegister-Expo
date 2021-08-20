@@ -1,7 +1,7 @@
 import React from "react";
 import { styles } from "../styles";
 
-import { Appbar, Divider, Drawer, Surface } from "react-native-paper";
+import { Appbar, Divider, Drawer, Surface, List } from "react-native-paper";
 
 import { connect } from "react-redux";
 import { logout } from "../actions";
@@ -24,13 +24,16 @@ class More extends React.Component {
           <Appbar.Content style={{ alignItems: "center" }} title="Settings" />
         </Appbar.Header>
         <Surface style={{ ...styles.surface, marginTop: 32 }}>
-          <Drawer.Item
-            icon="account"
-            label={
+          <List.Item
+            title={
               this.props.currentUser
                 ? this.props.currentUser.displayname
                 : "loading ..."
             }
+            description={
+              this.props.currentUser ? this.props.currentUser.id : "loading ..."
+            }
+            //left={(props) => <List.Icon {...props} icon="account" />}
           />
 
           <Drawer.Item

@@ -9,7 +9,8 @@ import { useSelector } from "react-redux";
 function CourseItem(props) {
   const currentUser = useSelector((state) => state.currentUser);
   return (
-    <Pressable style={{flex: 1, alignItems: "stretch",}}
+    <Pressable
+      style={{ flex: 1, alignItems: "stretch" }}
       onPress={() =>
         props.navigation.navigate(
           currentUser.role == "teacher" ? "CourseTeacher" : "Course",

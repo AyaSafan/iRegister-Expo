@@ -26,6 +26,7 @@ class Login extends React.Component {
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then(() => {
+        this.setState({ email: "", password: "", errorMessage: null });
         this.props.navigation.navigate("LoadingMain");
       })
       .catch((error) => this.setState({ errorMessage: error.message }));
@@ -57,14 +58,14 @@ class Login extends React.Component {
             >
               <View style={styles.sectionContainer}>
                 <View style={styles.logo}>
-                  <Image 
+                  <Image
                     source={require("../assets/iRegister_is_.png")}
                     style={{ alignSelf: "center" }}
                   />
                 </View>
 
                 <TextInput
-                  style={styles.margin}
+                  style={{ ...styles.margin, backgroundColor: "white" }}
                   mode="outlined"
                   label="Email"
                   onChangeText={(email) => this.setState({ email })}
@@ -72,7 +73,7 @@ class Login extends React.Component {
                 />
 
                 <TextInput
-                  style={styles.margin}
+                  style={{ ...styles.margin, backgroundColor: "white" }}
                   mode="outlined"
                   secureTextEntry={true}
                   label="Password"

@@ -10,7 +10,7 @@ import {
   Modal,
   TouchableWithoutFeedback,
   SafeAreaView,
-  ToastAndroid
+  ToastAndroid,
 } from "react-native";
 import { TextInput, Button } from "react-native-paper";
 
@@ -59,7 +59,9 @@ class QRcreate extends React.Component {
     permission
       ? this.setState({ errorMessage: null })
       : this.setState({ errorMessage: "Course permission denied" });*/
-    !permission? ToastAndroid.show("Course permission denied", ToastAndroid.SHORT) : undefined;
+    !permission
+      ? ToastAndroid.show("Course permission denied", ToastAndroid.SHORT)
+      : undefined;
   }
   getSecretKey(code) {
     getKey(code).then((secretKey) => this.setState({ secretKey }));
@@ -155,7 +157,7 @@ class QRcreate extends React.Component {
 
                 <TextInput
                   mode="outlined"
-                  style={styles.margin}
+                  style={{ ...styles.margin, backgroundColor: "white" }}
                   label="Course Code"
                   onChangeText={(code) => {
                     this.setState({ code });
@@ -167,7 +169,7 @@ class QRcreate extends React.Component {
                 <TextInput
                   mode="outlined"
                   disabled
-                  style={styles.margin}
+                  style={{ ...styles.margin, backgroundColor: "white" }}
                   label="Expiration"
                   value={this.state.date + " " + this.state.time}
                   left={
@@ -196,7 +198,7 @@ class QRcreate extends React.Component {
                 >
                   CREATE QR
                 </Button>
-                </View>
+              </View>
             </ScrollView>
           </KeyboardAvoidingView>
         </SafeAreaView>

@@ -125,7 +125,9 @@ function AttendanceList(props) {
                   mode="outlined"
                   style={{
                     marginHorizontal: 4,
-                    backgroundColor: presentSelected ? "white" : theme.background,
+                    backgroundColor: presentSelected
+                      ? "white"
+                      : theme.background,
                     borderColor: presentSelected ? theme.accent : "gray",
                     borderWidth: 1,
                   }}
@@ -146,7 +148,9 @@ function AttendanceList(props) {
                   mode="outlined"
                   style={{
                     marginHorizontal: 4,
-                    backgroundColor: absentSelected ? "white" : theme.background,
+                    backgroundColor: absentSelected
+                      ? "white"
+                      : theme.background,
                     borderColor: absentSelected ? theme.primary : "gray",
                     borderWidth: 1,
                   }}
@@ -166,18 +170,10 @@ function AttendanceList(props) {
             <Surface style={styles.surface}>
               {selectedStudents.map((student, index) => {
                 if (selectedStudents.length === index + 1) {
-                  return (
-                    <AttendItem
-                      key={index}
-                      student={student}
-                    />
-                  );
+                  return <AttendItem key={index} student={student} />;
                 } else {
                   return [
-                    <AttendItem
-                      key={index}
-                      student={student}
-                    />,
+                    <AttendItem key={index} student={student} />,
                     <Divider />,
                   ];
                 }

@@ -76,6 +76,9 @@ function Course(props) {
                 size={150}
                 thickness={15}
                 showsText={true}
+                formatText={() => {
+                  return `${total == 0 ? 0 : (attended / total) * 100}%`;
+                }}
                 color={"rgb(11, 184, 218)"}
                 unfilledColor={"rgba(255, 0, 0, 0.4)"}
                 strokeCap={"round"}

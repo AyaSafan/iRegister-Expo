@@ -34,7 +34,7 @@ class DateItem extends React.Component {
             }
           />
         ) : (
-          <List.Item 
+          <List.Item
             title={this.props.attendance.date}
             left={(props) => <List.Icon {...props} icon="calendar" />}
             right={(props) =>

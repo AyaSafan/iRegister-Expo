@@ -37,12 +37,7 @@ function QRscan() {
       return false;
     }
 
-    addAttend(
-      qr_obj.code,
-      qr_obj.timeStamp,
-      qr_obj.secretKey,
-      currentUser.uid
-    )
+    addAttend(qr_obj.code, qr_obj.timeStamp, qr_obj.secretKey, currentUser.uid)
       .then((done) => {
         //Alert.alert("", done.message);
         ToastAndroid.show(done.message, ToastAndroid.SHORT);
@@ -54,7 +49,6 @@ function QRscan() {
         Alert.alert("", "QR scan failed.");
         return false;
       });
-    F;
   };
 
   if (hasPermission === null) {
@@ -65,7 +59,7 @@ function QRscan() {
   }
 
   return (
-    <View style={{ ...styles.container, marginTop: 32, padding: 0 }}>
+    <View style={{ ...styles.container, padding: 0 }}>
       <BarCodeScanner
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         style={{ ...StyleSheet.absoluteFillObject, ...styles.scanner }}

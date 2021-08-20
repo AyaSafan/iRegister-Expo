@@ -19,24 +19,31 @@ export async function login(dispatch, getState) {
   };
 
   return new Promise((resolve, reject) => {
-    dispatch({ type: LOGIN, currentUser: user, info: info });
+    dispatch({ type: LOGIN, currentUser: user });
     resolve();
   });
 }
-export async function logout() {
-  return firebase
+export async function logout(dispatch, getState) {
+  firebase
     .auth()
     .signOut()
     .then(() => {
-      this.props.dispatch({ type: LOGOUT, currentUser: null });
+      console.log("logout");
+      return new Promise((resolve, reject) => {
+        dispatch({ type: LOGOUT });
+        resolve();
+      });
     })
-    .catch((error) => console.log(error));
+    .catch((error) => {
+      console.log(error);
+      return new Promise();
+    });
 }
 
 export async function getCourses(dispatch, getState) {
   const stateBefore = getState();
   const db = firebase.firestore();
-  if (stateBefore.info.role == "teacher") {
+  if (stateBefore.currentUser.role == "teacher") {
     const snapshot = await db
       .collection("courses")
       .where("teacherID", "==", stateBefore.currentUser.uid)

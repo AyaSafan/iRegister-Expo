@@ -137,6 +137,9 @@ export async function addAttend(code, timeStamp, secretKey, uid) {
   await docRef
     .get()
     .then((doc) => {
+      //set code and name to navigate to course after attendance
+      done.code = code;
+      done.name = doc2.data().name;
       if (doc.exists) {
         //console.log("Document data:", doc.data());
         if (!doc.data().students.includes(uid)) {
@@ -144,13 +147,16 @@ export async function addAttend(code, timeStamp, secretKey, uid) {
             students: firebase.firestore.FieldValue.arrayUnion(uid),
           });
           done.message = `${code} attendance added.`;
+          return done;
         } else {
           done.message = `${code} attendance exists.`;
+          return done;
         }
       } else {
         //console.log("No such document!");
         var data = {
           date: nowDate,
+          timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
           students: [uid],
         };
         db.collection("attendance")
@@ -160,14 +166,10 @@ export async function addAttend(code, timeStamp, secretKey, uid) {
           .set(data);
         done.message = `${code} attendance added.`;
       }
-      //set code and name to navigate to course after attendance
-      done.code = code;
-      done.name = doc.data().name;
+      return done;
     })
     .catch((error) => {
       console.log("Error getting document:", error);
-      done.code = null;
-      done.name = null;
       done.message = `QR scan failed. Try again later.`;
     });
 
